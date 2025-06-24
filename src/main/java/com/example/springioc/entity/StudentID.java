@@ -1,5 +1,7 @@
 package com.example.springioc.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,10 +20,9 @@ public class StudentID {
 
 
     @OneToOne(cascade=CascadeType.ALL , orphanRemoval=true)
-    @JoinColumn(name="generalID")
+    @JoinColumn(name="GeneralID",referencedColumnName="id")
+    @JsonManagedReference
     private GeneralID generalID;
-
-
 
 
     public Long getId() {
@@ -37,43 +38,5 @@ public class StudentID {
     public void setGeneralID(GeneralID generalID) {
         this.generalID = generalID;
     }
-    /*
-    private String Faculty;
-    private String Department;
-    private String Program;
-    private Long StudentIDNo;
-
-    public String getFaculty() {
-        return Faculty;
-    }
-
-    public void setFaculty(String Faculty) {
-        this.Faculty = Faculty;
-    }
-
-    public String getDepartment() {
-        return Department;
-    }
-
-    public void setDepartment(String Department) {
-        this.Department = Department;
-    }
-
-    public String getProgram() {
-        return Program;
-    }
-
-    public void setProgram(String Program) {
-        this.Program = Program;
-    }
-
-    public Long getStudentIDNo() {
-        return StudentIDNo;
-    }
-
-    public void setStudentIDNo(Long StudentIDNo) {
-        this.StudentIDNo = StudentIDNo;
-    }*/
-
 
 }

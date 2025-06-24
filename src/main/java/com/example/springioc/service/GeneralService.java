@@ -8,17 +8,16 @@ import com.example.springioc.dto.StudentCreateRequest;
 import com.example.springioc.entity.GeneralID;
 import com.example.springioc.entity.StudentID;
 import com.example.springioc.repository.GeneralRepo;
-import com.example.springioc.repository.StudentRepo;
 
 @Service
-public class StudentService {
-    private final StudentRepo studentDB;
+public class GeneralService {
+    private final GeneralRepo generalDB;
 
-    public StudentService(GeneralRepo generalDB, StudentRepo studentDB) {
-        this.studentDB = studentDB;
+    public GeneralService(GeneralRepo generalDB) {
+        this.generalDB = generalDB;
     }
 
-    public StudentID CreateStudent(StudentCreateRequest newstudent){
+    public GeneralID CreateStudent(StudentCreateRequest newstudent){
         GeneralID general = new GeneralID();
         general.setName(newstudent.name);
         general.setSurname(newstudent.surname);
@@ -26,14 +25,14 @@ public class StudentService {
         StudentID student = new StudentID();
         general.setStudentID(student);
         student.setGeneralID(general);
-        return studentDB.save(student);
+        return generalDB.save(general);
     }
 
-    public List<StudentID> GetAllStudents(){
-        return studentDB.findAll();
+    public List<GeneralID> GetAllStudents(){
+        return generalDB.findAll();
     }
     public void deleteById(Long id) {
-        studentDB.deleteById(id);
+        generalDB.deleteById(id);
     }
 
 }
