@@ -1,10 +1,10 @@
-package com.example.CrudAppSingle;
+package com.example.SprinIoC;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CrudAppSingleApplicationTests {
+class SprinIoCApplicationTests {
 
 	@Test
 	void contextLoads() {

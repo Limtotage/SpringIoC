@@ -2,3 +2,7 @@
 Dünkü projeye 2 fakrlı Entity daha eklendi.
 Time Stamp için BaseTimeEntity ve User reminders entitiyleri eklendi.
 
+Yeni Proje Açıldı.
+Bu Projede 1:1 , 1:M ,M:1 ,M:M UniDirectional ve BiDirectional olarak geliştirilecek. 
+
+1:1 Tektaraflı olarak Bağlantı kuruldu Şuan Projede o mevcut. 
