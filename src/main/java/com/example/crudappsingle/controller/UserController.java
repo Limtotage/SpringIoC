@@ -12,31 +12,32 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.crudappsingle.entity.Todo;
-import com.example.crudappsingle.service.ToDoService;
+import com.example.crudappsingle.entity.User;
+import com.example.crudappsingle.service.UserService;
 
 @RestController
-@RequestMapping("/todos")
-public class ToDoController {
+@RequestMapping("/users")
+public class UserController {
     @Autowired
-    private final ToDoService todoService;
-    public ToDoController(ToDoService todoService){
-        this.todoService=todoService;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
     @GetMapping
-    public List<Todo> getAllToDos(){
-        return todoService.GetAllToDos();
+    public List<User> GetAllUsers(){
+        return userService.GetAllUsers();
     }
     @PostMapping
-    public Todo CreateToDo(@RequestBody Todo todo){
-        return todoService.SaveToDO(todo);
+    public User SaveUser(@RequestBody User user){
+        return userService.SaveUser(user);
     }
     @PutMapping("/{id}")
-    public Todo UpdateToDo(@PathVariable Long id, @RequestBody Todo todo){
-        return todoService.UpdateToDo(id, todo);
+    public User UpdateUser(@PathVariable Long id, @RequestBody User user){
+        return userService.UpdateUser(id, user);
     }
     @DeleteMapping("/{id}")
-    public void DeleteToDO(@PathVariable Long id){
-        todoService.deleteToDo(id);
+    public void DeleteReminder(@PathVariable Long id){
+        userService.DeleteUser(id);
     }
 }
