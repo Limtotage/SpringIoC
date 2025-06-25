@@ -52,4 +52,13 @@ public class Student {
     public void setCourses(List<Course> courses) {
         this.courses = courses;
     }
+        public void addCourse(Course course) {
+        courses.add(course);
+        course.getStudents().add(this); 
+    }
+
+    public void removeCourse(Course course) {
+        courses.remove(course);
+        course.getStudents().remove(this); // ters yönden de kaldır
+    }
 }
