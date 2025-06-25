@@ -1,39 +1,30 @@
-package com.example.springioc.service;
-
+package  com.example.springioc.service;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.springioc.dto.StudentCreateRequest;
-import com.example.springioc.entity.GeneralID;
-import com.example.springioc.entity.StudentID;
-import com.example.springioc.repository.GeneralRepo;
+import com.example.springioc.entity.Student;
 import com.example.springioc.repository.StudentRepo;
 
 @Service
 public class StudentService {
-    private final StudentRepo studentDB;
 
-    public StudentService(GeneralRepo generalDB, StudentRepo studentDB) {
-        this.studentDB = studentDB;
-    }
+    @Autowired
+    private StudentRepo studentDB;
 
-    public StudentID CreateStudent(StudentCreateRequest newstudent){
-        GeneralID general = new GeneralID();
-        general.setName(newstudent.name);
-        general.setSurname(newstudent.surname);
-
-        StudentID student = new StudentID();
-        general.setStudentID(student);
-        student.setGeneralID(general);
+    public Student saveStudent(Student student) {
+        if (student.getGeneralID() != null) {
+            student.getGeneralID().setStudent(student);
+        }
         return studentDB.save(student);
     }
 
-    public List<StudentID> GetAllStudents(){
+    public List<Student> getAll() {
         return studentDB.findAll();
     }
+
     public void deleteById(Long id) {
         studentDB.deleteById(id);
     }
-
 }

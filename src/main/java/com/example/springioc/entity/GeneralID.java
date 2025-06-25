@@ -1,7 +1,6 @@
 package com.example.springioc.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,38 +9,31 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "GeneralID")
+@Table(name = "generalID")
 public class GeneralID {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name="id")
     private Long id;
 
-    @OneToOne(mappedBy="generalID")
-    @JsonBackReference
-    private StudentID studentID;
-
+    @Column(name="surname")
     private String surname;
+    @Column(name="name")
     private String name;
+
+    @OneToOne(mappedBy = "generalID")
+    private Student student;
 
     public Long getId() {
         return id;
-    }
-
-
-    public StudentID getStudentID() {
-        return studentID;
-    }
-
-    public void setStudentID(StudentID studentID) {
-        this.studentID = studentID;
     }
 
     public String getSurname() {
         return surname;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setSurname(String surName) {
+        this.surname = surName;
     }
 
     public String getName() {
@@ -52,6 +44,16 @@ public class GeneralID {
         this.name = name;
     }
 
+    public Student getStudent() {
+        return student;
+    }
 
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
 }
