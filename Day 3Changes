@@ -1,2 +1,5 @@
 1:1 İki yönlü olarak tanımlandı.
+Bir hata vardı sonsuz JSOn döngüsü oluşuyordu bunu engellemek için
+    @JsonIgnoreProperties(value={"student"})
+ile student tekrar ediyor diye JSONu bilgilendiriryoruz.
 

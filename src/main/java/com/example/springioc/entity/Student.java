@@ -1,5 +1,7 @@
 package com.example.springioc.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,6 +23,7 @@ public class Student {
 
     @OneToOne(cascade=CascadeType.ALL,orphanRemoval=true)
     @JoinColumn(name = "general_id")
+    @JsonIgnoreProperties(value={"student"})
     private GeneralID generalID;
 
     public Long getId() {

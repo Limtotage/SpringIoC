@@ -2,7 +2,6 @@
 package com.example.springioc.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,34 +14,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.springioc.dto.StudentDTO;
 import com.example.springioc.entity.Student;
 import com.example.springioc.service.StudentService;
-import com.example.springioc.util.MapperUtil;
 
 @RestController
 @RequestMapping("/students")
 public class StudentController {
 
-
     @Autowired
     private StudentService studentService;
-
     @PostMapping
-    public ResponseEntity<StudentDTO> createStudent(@RequestBody StudentDTO studentDTO) {
-        Student student = MapperUtil.toStudent(studentDTO);
-        Student saved = studentService.saveStudent(student);
-        StudentDTO responseDTO = MapperUtil.toStudentDTO(saved);
-        return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
+        return new ResponseEntity<>(studentService.saveStudent(student), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public List<StudentDTO> getAllStudents() {
-        List<Student> students = studentService.getAll();
-        return students.stream()
-                .map(MapperUtil::toStudentDTO)
-                .collect(Collectors.toList());
+    public List<Student> getAllStudents() {
+        return studentService.getAll();
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteStudent(@PathVariable Long id) {
         studentService.deleteById(id);
