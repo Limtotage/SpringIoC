@@ -12,27 +12,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.springioc.entity.Student;
-import com.example.springioc.service.StudentService;
+import com.example.springioc.entity.Course;
+import com.example.springioc.service.CourseService;
 
 @RestController
-@RequestMapping("/student")
-public class StudentController {
+@RequestMapping("/course")
+public class CourseController {
     @Autowired
-    private StudentService service;
+    private CourseService service;
 
     @PostMapping
-    public ResponseEntity<Student> CreateStudent(@RequestBody Student student){
-        return ResponseEntity.ok(service.CreateStudent(student));
+    public ResponseEntity<Course> CreateStudent(@RequestBody Course student){
+        return ResponseEntity.ok(service.CreateCourse(student));
     }
 
     @GetMapping
-    public ResponseEntity<List<Student>> GetAllStudents(){
-        return ResponseEntity.ok(service.GetAllStudents());
+    public ResponseEntity<List<Course>> GetAllStudents(){
+        return ResponseEntity.ok(service.GetAllCourses());
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<String> DeleteStudent(@PathVariable Long id){
-        service.DeleteStudent(id);
+        service.DeleteCourse(id);
         return ResponseEntity.ok("Öğrenci silindi");
     }
 }

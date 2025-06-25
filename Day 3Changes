@@ -4,3 +4,4 @@ Bir hata vardı sonsuz JSOn döngüsü oluşuyordu bunu engellemek için
 
 1:M uniDirectional geliştirildi. 
 1:M BiDirectional Geliştirildi.
+M:M unidirectional geliştirildi.

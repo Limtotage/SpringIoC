@@ -1,8 +1,9 @@
 package com.example.springioc.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,56 +11,45 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="student")
+@Table(name = "students")
 public class Student {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id") private Long id;
+    @Column(name = "id")
+    private Long id;
 
-    @Column(name="fullname") private String fullname;
-    @Column(name="number") private Long number;
+    @Column(name = "name")
+    private String name;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="deptID")
-    @JsonIgnoreProperties(value={"students","hibernateLazyInitializer","handler"})
-    private Department department;
-
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    }, fetch = FetchType.LAZY)
+    @JoinTable(name = "student_Course", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+    private List<Course> courses = new ArrayList<>();
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public String getName() {
+        return name;
     }
 
-    public String getFullname() {
-        return fullname;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
+    public List<Course> getCourses() {
+        return courses;
     }
 
-    public Long getNumber() {
-        return number;
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
     }
-
-    public void setNumber(Long number) {
-        this.number = number;
-    }
-
-    public Department getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
-    }
-
 }
