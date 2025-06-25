@@ -14,29 +14,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.springioc.entity.Student;
-import com.example.springioc.service.StudentService;
+import com.example.springioc.entity.Department;
+import com.example.springioc.service.DeptService;
 
 @RestController
-@RequestMapping("/students")
-public class StudentController {
+@RequestMapping("/department")
+public class DeptController {
 
     @Autowired
-    private StudentService studentService;
+    private DeptService deptService;
     @PostMapping
-    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
-        return new ResponseEntity<>(studentService.saveStudent(student), HttpStatus.CREATED);
+    public ResponseEntity<Department> CreateDepartment(@RequestBody Department dept) {
+        return new ResponseEntity<>(deptService.CreateDept(dept), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public List<Student> getAllStudents() {
-        return studentService.getAll();
+    public List<Department> GetAllDepartments() {
+        return deptService.getAll();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteStudent(@PathVariable Long id) {
-        studentService.deleteById(id);
-        return ResponseEntity.ok("Student with id " + id + " deleted successfully.");
+    public ResponseEntity<String> DeleteDepartment(@PathVariable Long id) {
+        deptService.deleteById(id);
+        return ResponseEntity.ok("Department with id " + id + " deleted successfully.");
     }
 }
 
