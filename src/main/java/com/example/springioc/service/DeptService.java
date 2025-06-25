@@ -15,10 +15,13 @@ public class DeptService{
 
 
     public Department CreateDept(Department dept){
+        if(dept.getStudents()!=null){
+            dept.getStudents().forEach(x->x.setDepartment(dept));
+        }
         return deptDB.save(dept);
     }
 
-    public List<Department>  getAll() {
+    public List<Department>  getAllDept() {
         return deptDB.findAll();
     }
 

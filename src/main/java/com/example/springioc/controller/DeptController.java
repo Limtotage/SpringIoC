@@ -30,7 +30,7 @@ public class DeptController {
 
     @GetMapping
     public List<Department> GetAllDepartments() {
-        return deptService.getAll();
+        return deptService.getAllDept();
     }
 
     @DeleteMapping("/{id}")
