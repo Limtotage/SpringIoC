@@ -33,6 +33,6 @@ public class CourseController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> DeleteStudent(@PathVariable Long id){
         service.DeleteCourse(id);
-        return ResponseEntity.ok("Öğrenci silindi");
+        return ResponseEntity.ok("Ders Silindi.");
     }
 }
