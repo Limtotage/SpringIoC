@@ -1,7 +1,11 @@
 package com.example.springioc.entity;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,29 +16,18 @@ import jakarta.persistence.Table;
 public class MyUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Long id;
 
-    public Long getId() {
-        return id;
-    }
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
+    @Column(name = "name")
     private String name;
 
-    @Column(unique = true)
+    @Column(name = "username", unique = true)
     private String username;
-
+    @Column(name = "password")
     private String password;
 
     public String getUsername() {
@@ -51,5 +44,25 @@ public class MyUser {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
     }
 }

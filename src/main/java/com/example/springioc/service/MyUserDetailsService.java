@@ -1,8 +1,9 @@
 package com.example.springioc.service;
 
-import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,6 +21,8 @@ public class MyUserDetailsService implements UserDetailsService{
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         MyUser myUser = userDB.findByUsername(username).orElseThrow(()->new UsernameNotFoundException("User Not Found.") );
-        return new User(myUser.getUsername(),myUser.getPassword(),new ArrayList<>()); 
+        return new User(myUser.getUsername(),myUser.getPassword(),myUser.getRoles()
+        .stream().map(SimpleGrantedAuthority::new)
+        .collect(Collectors.toList())); 
     }
 }

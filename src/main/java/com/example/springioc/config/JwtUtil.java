@@ -3,17 +3,19 @@ package com.example.springioc.config;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import io.jsonwebtoken.JwtException;
+import com.example.springioc.entity.MyUser;
+
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtUtil {
-
     private final String secret = "my-super-secret-key-which-should-be-long";
     private final long expirationMs = 1000 * 60 * 60;
 
@@ -21,13 +23,25 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String GenerateToken(String username) {
+    public String GenerateToken(MyUser user) {
+        Map<String,Object> claims = new HashMap<>();
+        claims.put("roles", user.getRoles());
         return Jwts.builder()
-                .setSubject(username)
+                .setClaims(claims)
+                .setSubject(user.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .signWith(getSigningKey())
                 .compact();
+    }
+
+    public String ExtractRole(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("role", String.class);
     }
 
     public String ExtractUsername(String token) {
@@ -38,16 +52,18 @@ public class JwtUtil {
                 .getBody()
                 .getSubject();
     }
+    public boolean ValidateToken(String token,UserDetails userDeatails){
+        String username = ExtractUsername(token);
+        return username.equals(userDeatails.getUsername()) && !IsTokenExpired(token);
+    }
 
-    public boolean ValidateToken(String token) {
-        try {
-            Jwts.parserBuilder()
+    private boolean IsTokenExpired(String token) {
+        return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()
-                .parseClaimsJws(token);
-            return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            return false;
-        }
+                .parseClaimsJws(token)
+                .getBody()
+                .getExpiration()
+                .before(new Date());
     }
 }
