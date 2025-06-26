@@ -16,16 +16,39 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "students")
+@Table(name = "student")
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "userID")
     private Long id;
 
     @Column(name = "name")
     private String name;
 
+
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Column(name = "username")
+    private String username;
+    @Column(name = "password")
+    private String password;
+    
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
@@ -52,9 +75,10 @@ public class Student {
     public void setCourses(List<Course> courses) {
         this.courses = courses;
     }
-        public void addCourse(Course course) {
+
+    public void addCourse(Course course) {
         courses.add(course);
-        course.getStudents().add(this); 
+        course.getStudents().add(this);
     }
 
     public void removeCourse(Course course) {
