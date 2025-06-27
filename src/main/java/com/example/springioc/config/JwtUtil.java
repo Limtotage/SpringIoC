@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +17,7 @@ import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtUtil {
-    private final String secret = "my-super-secret-key-which-should-be-long";
+    private final String secret = "benbuuzunluktabirsifreolusturdum";
     private final long expirationMs = 1000 * 60 * 60;
 
     private Key getSigningKey() {
@@ -24,7 +25,7 @@ public class JwtUtil {
     }
 
     public String GenerateToken(MyUser user) {
-        Map<String,Object> claims = new HashMap<>();
+        Map<String, Object> claims = new HashMap<>();
         claims.put("roles", user.getRoles());
         return Jwts.builder()
                 .setClaims(claims)
@@ -35,13 +36,14 @@ public class JwtUtil {
                 .compact();
     }
 
-    public String ExtractRole(String token) {
-        return Jwts.parserBuilder()
+    @SuppressWarnings("unchecked")
+    public List<String> ExtractRoles(String token) {
+        return (List<String>) Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
-                .get("role", String.class);
+                .get("roles", List.class);
     }
 
     public String ExtractUsername(String token) {
@@ -52,7 +54,8 @@ public class JwtUtil {
                 .getBody()
                 .getSubject();
     }
-    public boolean ValidateToken(String token,UserDetails userDeatails){
+
+    public boolean ValidateToken(String token, UserDetails userDeatails) {
         String username = ExtractUsername(token);
         return username.equals(userDeatails.getUsername()) && !IsTokenExpired(token);
     }
