@@ -14,16 +14,18 @@ import com.example.springioc.entity.MyUser;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Component
+@Tag(name = "JWT İşlemleri")
 public class JwtUtil {
     private final String secret = "benbuuzunluktabirsifreolusturdum";
     private final long expirationMs = 1000 * 60 * 60;
-
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
-
+    @Operation(summary = "JWT Token Oluşturma")
     public String GenerateToken(MyUser user) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("roles", user.getRoles());
@@ -37,6 +39,7 @@ public class JwtUtil {
     }
 
     @SuppressWarnings("unchecked")
+    @Operation(summary = "JWT Token'dan Roller Çıkarma")
     public List<String> ExtractRoles(String token) {
         return (List<String>) Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
@@ -45,7 +48,7 @@ public class JwtUtil {
                 .getBody()
                 .get("roles", List.class);
     }
-
+    @Operation(summary = "JWT Token'dan Kullanıcı Adı Çıkarma")
     public String ExtractUsername(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
@@ -55,11 +58,13 @@ public class JwtUtil {
                 .getSubject();
     }
 
-    public boolean ValidateToken(String token, UserDetails userDeatails) {
+    @Operation(summary = "JWT Token Doğrulama")
+    public boolean ValidateToken(String token, UserDetails userDetails) {
         String username = ExtractUsername(token);
-        return username.equals(userDeatails.getUsername()) && !IsTokenExpired(token);
+        return username.equals(userDetails.getUsername()) && !IsTokenExpired(token);
     }
 
+    @Operation(summary = "JWT Token'ın Süresinin Dolup Dolmadığını Kontrol Etme")
     private boolean IsTokenExpired(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())

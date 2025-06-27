@@ -1,5 +1,8 @@
 package com.example.springioc.dto;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Authentication Request Data Transfer Object")
 public class AuthRequest {
     private String username;
     private String password;

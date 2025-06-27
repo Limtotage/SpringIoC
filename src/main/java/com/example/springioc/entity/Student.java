@@ -3,6 +3,7 @@ package com.example.springioc.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,6 +18,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "student")
+@Tag(name = "Öğrenci Nesnesi")
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

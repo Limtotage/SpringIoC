@@ -13,6 +13,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.example.springioc.service.MyUserDetailsService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,6 +22,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 
 @Component
+@Tag(name="JWT Request Filter")
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -29,6 +32,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private MyUserDetailsService myUserDetailsService;
 
     @Override
+    @Operation(summary = "JWT Token Doğrulama ve Kullanıcı Bilgilerini Ayarlama")
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain)

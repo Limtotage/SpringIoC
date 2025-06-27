@@ -3,8 +3,10 @@ package com.example.springioc.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,6 +17,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="Courses")
+@Tag(name = "Ders Nesnesi")
 public class Course {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -22,7 +25,8 @@ public class Course {
 
     @Column(name="course")private String coursename;
     @ManyToMany(mappedBy="courses")
-    @JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","courses"})
+    @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "courses", "students"})
+    @JsonIgnore 
     private List<Student> students = new ArrayList<>();
 
 
