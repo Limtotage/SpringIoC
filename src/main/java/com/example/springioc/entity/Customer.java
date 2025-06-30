@@ -2,8 +2,6 @@ package com.example.springioc.entity;
 
 import java.time.LocalDateTime;
 
-import org.springframework.data.annotation.CreatedDate;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,7 +37,6 @@ public class Customer {
     @Column(name = "address")
     private String address;
 
-    @CreatedDate
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
