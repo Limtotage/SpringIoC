@@ -1,70 +1,46 @@
 package com.example.springioc.entity;
 
-import java.util.List;
+import java.util.Set;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Table(name = "user")
-@Tag(name = "Kullanıcı Nesnesi")
+@Getter
+@Setter
+@Table(name = "users")
 public class MyUser {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     private Long id;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> roles;
-
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "username", unique = true)
+    @Column(name = "username")
     private String username;
+
     @Column(name = "password")
     private String password;
 
-    public String getUsername() {
-        return username;
-    }
+    @Column(name = "is_enabled")
+    private boolean enabled = true;
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public List<String> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
-    }
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "user_roles",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles;
 }
