@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -51,11 +53,14 @@ public class Customer {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","orders"})
     private List<CustomerOrder> orders;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","reviews"})
     private List<Review> reviews;
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","cart"})
     private Cart cart;
 
     protected void onCreate() {

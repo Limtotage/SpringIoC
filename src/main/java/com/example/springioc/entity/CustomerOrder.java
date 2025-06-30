@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -47,9 +48,11 @@ public class CustomerOrder {
     private Customer customer;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","items"})
     private List<OrderItem> items;
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","payment"})
     private Payment payment;
 
     @PrePersist

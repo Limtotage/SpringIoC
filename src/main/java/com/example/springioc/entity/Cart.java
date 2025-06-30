@@ -3,6 +3,8 @@ package com.example.springioc.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,6 +34,7 @@ public class Cart {
     private Customer customer;
     
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","cartItmes"})
     private List<CartItem> cartItems;
 
     @Column(name = "Cart_created_at")
