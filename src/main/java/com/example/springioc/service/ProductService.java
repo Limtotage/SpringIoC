@@ -17,4 +17,8 @@ public class ProductService {
     public List<Product> GetAllProducts(){
         return productDB.findAll();
     }
+
+    public List<Product> SearchProducts(String search){
+        return productDB.findByNameContainingIgnoreCase(search);
+    }
 }

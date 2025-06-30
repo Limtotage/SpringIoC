@@ -21,7 +21,7 @@ public class CustomerService {
     public List<Customer> GetAllCustomers(){
         return customerDB.findAll();
     }
-    public Customer RegisterCusstomer(Customer entity){
+    public Customer RegisterCustomer(Customer entity){
         return customerDB.save(entity);
     }
 }

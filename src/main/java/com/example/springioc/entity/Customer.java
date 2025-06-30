@@ -1,20 +1,14 @@
 package com.example.springioc.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -52,16 +46,6 @@ public class Customer {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","orders"})
-    private List<CustomerOrder> orders;
-
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","reviews"})
-    private List<Review> reviews;
-    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","cart"})
-    private Cart cart;
 
     protected void onCreate() {
         createdAt = LocalDateTime.now();
