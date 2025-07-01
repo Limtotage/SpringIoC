@@ -15,6 +15,6 @@ post Autha bak
 
 
 Günlük
-Entityler Added to StoreProject
-Services Added To Store Project
+DTO ve Mapperlar Eklendi. Controllerlar ve servisler tamamlandı
+Projeye JJWTLer ve user olarak customerlar ekleniyor
 
