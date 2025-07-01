@@ -17,7 +17,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
 @Component
-public class JWTUtil {
+public class JwtUtil {
     private final String SECRET_KEY = "icreatethisandaverylongsecretkey";
     private final long expirationMs = 1000 * 60 * 60;
 

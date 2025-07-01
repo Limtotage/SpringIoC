@@ -21,7 +21,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
-    private JWTUtil jwtUtil;
+    private JwtUtil jwtUtil;
 
     @Autowired
     private MyUserDetailsService myUserDetailsService;
@@ -29,8 +29,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @SuppressWarnings("null")
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
-                                    @NonNull HttpServletResponse response,
-                                    @NonNull FilterChain filterChain)
+            @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain)
             throws ServletException, IOException, java.io.IOException {
 
         final String authHeader = request.getHeader("Authorization");
@@ -50,12 +50,18 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = myUserDetailsService.loadUserByUsername(username);
 
-            if (jwtUtil.ValidateToken(jwtToken,userDetails)) {
+            if (jwtUtil.ValidateToken(jwtToken, userDetails)) {
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities()
-                );
+                        userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+                // Post-authentication işlemleri (Örnek)
+                String userIP = request.getRemoteAddr();
+                String usernameLoggedIn = userDetails.getUsername();
+                System.out.println("Logged in User " + usernameLoggedIn + ", IP: " + userIP);
+
+                // İsteğe bağlı: DB'ye log atabilir, son giriş tarihi güncelleyebilirsin
+                // myUserService.updateLastLogin(usernameLoggedIn);
             }
         }
 
