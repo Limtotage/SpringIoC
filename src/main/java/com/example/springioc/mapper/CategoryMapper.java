@@ -1,12 +1,14 @@
 package com.example.springioc.mapper;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import com.example.springioc.dto.CategoryDTO;
 import com.example.springioc.entity.Category;
-import com.example.springioc.entity.Product; // Product entity's ID'lerini CategoryDTO'ya maplemek için kullanılır
+import com.example.springioc.entity.Product;
 
 @Mapper(componentModel = "spring")
 public interface CategoryMapper {
@@ -14,6 +16,11 @@ public interface CategoryMapper {
 
     @Mapping(target = "productIds", expression = "java(category.getProducts() != null ? category.getProducts().stream().map(Product::getId).toList() : null)")
     CategoryDTO toDTO(Category category);
+
+    default void _forceImports() {
+        Product dummy = new Product();
+        List<Product> list = List.of(dummy);
+    }
 
     @Mapping(target = "products", ignore = true) // sadece id'ler DTO'da, entity'ye çevirirken manuel set edilmeli
     Category toEntity(CategoryDTO dto);
