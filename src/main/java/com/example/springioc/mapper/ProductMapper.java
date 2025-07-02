@@ -12,6 +12,7 @@ public interface ProductMapper {
     @Mapping(target = "categoryId", source = "category.id")
     ProductDTO toDTO(Product product);
 
-    @Mapping(target = "category", ignore = true) // manuel atanmalı
+    @Mapping(target = "category", ignore = true) 
+    @Mapping(target = "customer", ignore = true) 
     Product toEntity(ProductDTO dto);
 }

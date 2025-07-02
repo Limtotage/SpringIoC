@@ -1,6 +1,7 @@
 package com.example.springioc.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,9 +11,8 @@ import lombok.Setter;
 public class CustomerDTO {
     private Long id;
     private String fullname;
-    private String email;
-    private String phone;
-    private String address;
+    private String username;
+    private List<ProductDTO> products;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

@@ -6,7 +6,7 @@ import org.mapstruct.Mapping;
 import com.example.springioc.dto.CustomerDTO;
 import com.example.springioc.entity.Customer;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = ProductMapper.class)
 public interface CustomerMapper {
     CustomerDTO toDTO(Customer customer);
 

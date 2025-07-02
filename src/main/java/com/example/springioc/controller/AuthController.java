@@ -1,7 +1,5 @@
 package com.example.springioc.controller;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.service.annotation.GetExchange;
 
 import com.example.springioc.config.JwtUtil;
 import com.example.springioc.dto.AuthRequest;
@@ -28,8 +25,6 @@ import com.example.springioc.entity.MyUser;
 import com.example.springioc.entity.Role;
 import com.example.springioc.security.RoleRepo;
 import com.example.springioc.security.UserRepo;
-
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")

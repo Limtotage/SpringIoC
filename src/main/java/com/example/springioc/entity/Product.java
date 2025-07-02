@@ -49,6 +49,10 @@ public class Product {
     @JoinColumn(name = "Category_ID")
     private Category category;
 
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
