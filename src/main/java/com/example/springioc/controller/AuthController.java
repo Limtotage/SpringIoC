@@ -65,7 +65,7 @@ public class AuthController {
         user.setPassword(registerRequest.getPassword());
 
         if (registerRequest.getRoles() == null || registerRequest.getRoles().isEmpty()) {
-            Role defaultRole = roleDB.findByName("ROLE_USER")
+            Role defaultRole = roleDB.findByName("ROLE_CUSTOMER")
                     .orElseThrow(() -> new RuntimeException("Default role not found"));
             user.setRoles(Set.of(defaultRole));
         } else {
@@ -76,7 +76,7 @@ public class AuthController {
             user.setRoles(attachedRoles);
         }
         if (userDB.existsByUsername(user.getUsername())) {
-            return ResponseEntity.badRequest().body("Username already exists");
+            return ResponseEntity.badRequest().body("This Username already exists");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDB.save(user);

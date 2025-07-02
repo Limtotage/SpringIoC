@@ -2,6 +2,7 @@ package com.example.springioc.controller;
 
 import java.util.List;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,37 +15,35 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.springioc.dto.CustomerDTO;
-import com.example.springioc.service.CustomerService;
+import com.example.springioc.dto.SellerDTO;
+import com.example.springioc.service.SellerService;
 
 @RestController
-@RequestMapping("/api/customer")
-public class CustomerController {
+@RequestMapping("/api/seller")
+public class SellerController {
     @Autowired
-    private CustomerService customerService;
+    private SellerService sellerService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CUSTOMER') or hasRole('ROLE_SELLER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER')")
     @PostMapping
-    public ResponseEntity<CustomerDTO> CreateCustomer(@RequestBody CustomerDTO customerDTO) {
-        return ResponseEntity.ok(customerService.RegisterCustomer(customerDTO));
+    public ResponseEntity<SellerDTO> CreateSeller(@RequestBody SellerDTO sellerDTO) {
+        return ResponseEntity.ok(sellerService.CreateSeller(sellerDTO));
     }
-
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
-    public ResponseEntity<List<CustomerDTO>> GetAllCustomers(){
-        return ResponseEntity.ok(customerService.GetAllCustomers());
+    public ResponseEntity<List<SellerDTO>> GetAllSellers() {
+        return ResponseEntity.ok(sellerService.GetAllSellers());
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("#id == authentication.principal.id or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<CustomerDTO> UpdateCustomer(@PathVariable Long id, @RequestBody CustomerDTO customerDTO) {
-        return ResponseEntity.ok(customerService.UpdateCustomer(id, customerDTO));
+    public ResponseEntity<SellerDTO> UpdateSeller(@PathVariable Long id, @RequestBody SellerDTO sellerDTO) {
+        return ResponseEntity.ok(sellerService.UpdateSeller(id, sellerDTO));
     }
-
     @DeleteMapping("/{id}")
     @PreAuthorize("#id == authentication.principal.id or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<String> DeleteCustomer(@PathVariable Long id) {
-        customerService.DeleteCustomer(id);
-        return ResponseEntity.ok("Customer deleted successfully");
+    public ResponseEntity<String> DeleteSeller(@PathVariable Long id) {
+        sellerService.DeleteSeller(id);
+        return ResponseEntity.ok("Seller deleted successfully");
     }
 }

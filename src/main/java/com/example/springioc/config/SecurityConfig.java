@@ -27,7 +27,8 @@ public class SecurityConfig {
         return http.csrf(csrfCustomizer -> csrfCustomizer.disable())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/user/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/api/seller/**").hasAnyRole("ADMIN", "SELLER")
+                        .requestMatchers("/api/customer/**").hasAnyRole("ADMIN", "CUSTOMER", "SELLER")
                         .requestMatchers("/api/swagger-ui/**",
                                 "/api/v3/api-docs/**")
                         .permitAll()

@@ -2,15 +2,14 @@ package com.example.springioc.dto;
 
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-public class CustomerDTO {
+@Data
+public class SellerDTO {
     private Long id;
     private String fullname;
     private String username;
     private String password;
+    private List<CategoryDTO> categories;
     private List<ProductDTO> products;
 }

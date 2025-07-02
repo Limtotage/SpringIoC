@@ -8,7 +8,7 @@ import com.example.springioc.entity.Customer;
 
 @Mapper(componentModel = "spring", uses = ProductMapper.class)
 public interface CustomerMapper {
-    CustomerDTO toDTO(Customer customer);
+    CustomerDTO toDTO(Customer seller);
 
     @Mapping(target = "password", ignore = true)
     Customer toEntity(CustomerDTO dto);

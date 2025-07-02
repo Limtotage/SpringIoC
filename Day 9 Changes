@@ -3,6 +3,9 @@ Haftalık Plan
 E Ticeret Uygulaması Geliştiriyoeuz bu hafta
 müşteri Olacak ürün ekleyecek
 admin herşeyi görebilcek
+müşteri Satıcı ve admin bunlar Roller
+Satıcı kategori ekleyince admin onayı gereksin gibi bir şey dedi 
+get Aproved tarzı sadece onaylı kategorileri görüntüleme tarzı bir şey 
 Kategori 
 Ürün 
 Crud işlemleri olacak 
@@ -16,7 +19,7 @@ post Autha bak
 
 Günlük
 Authentication Tamam
-Dockera geçildi ve PostreSQL veritabanına
-Method Based Auth Geliştiriliyor
-
+Dockera ve PostreSQL veritabanına geçildi 
+Method Based Auth Eklendi
+Onay gereken daha çok logic mantıklı bir şeyler yapılıyor. burayı salladım.
 

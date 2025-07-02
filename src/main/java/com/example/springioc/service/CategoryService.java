@@ -27,7 +27,13 @@ public class CategoryService {
     private ProductRepo productDB;
     @Autowired
     private CategoryMapper mapper;
-
+    
+    public CategoryDTO CreateCategory(CategoryDTO dto){
+        Category category = mapper.toEntity(dto);
+        Category saved = categoryDB.save(category);
+        return mapper.toDTO(saved);
+    }
+    
     public List<CategoryDTO> GetAllCategories(){
         return categoryDB.findAll().stream().map(mapper::toDTO).collect(Collectors.toList());
     }
@@ -36,11 +42,6 @@ public class CategoryService {
         return categoryDB.findById(ID).map(mapper::toDTO);
     } 
 
-    public CategoryDTO CreateCategory(CategoryDTO dto){
-        Category category = mapper.toEntity(dto);
-        Category saved = categoryDB.save(category);
-        return mapper.toDTO(saved);
-    }
 
     public CategoryDTO UpdateCategory(Long Id, CategoryDTO dto) {
         Category existCategory = categoryDB.findById(Id)

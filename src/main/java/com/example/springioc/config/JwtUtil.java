@@ -30,15 +30,14 @@ public class JwtUtil {
     public String GenerateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
 
-        if (userDetails instanceof MyUserDetails) {
+        if(userDetails instanceof MyUserDetails) {
             MyUserDetails myUserDetails = (MyUserDetails) userDetails;
-            // Buradan orijinal MyUser nesnesine ulaşabilirsin
             MyUser user = myUserDetails.getUser();
             claims.put("roles", user.getRoles().stream()
                     .map(role -> role.getName())
                     .collect(Collectors.toList()));
-        } else {
-            // Eğer başka bir UserDetails türüyse, fallback olarak authorities kullan
+        } 
+        else {
             claims.put("roles", userDetails.getAuthorities().stream()
                     .map(grantedAuthority -> grantedAuthority.getAuthority())
                     .collect(Collectors.toList()));

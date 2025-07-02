@@ -39,27 +39,16 @@ public class Product {
     @Column(name = "ProductImage")
     private String imageUrl;
 
-    @Column(name = "CreatedTime")
-    private LocalDateTime createdAt;
-    
-    @Column(name = "UpdateTime")
-    private LocalDateTime updatedAt;
+    @ManyToOne
+    @JoinColumn(name = "Seller_ID")
+    private Seller seller;
 
     @ManyToOne
     @JoinColumn(name = "Category_ID")
     private Category category;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_ID")
     private Customer customer;
 
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
 }

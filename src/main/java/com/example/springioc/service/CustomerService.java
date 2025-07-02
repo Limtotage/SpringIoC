@@ -51,7 +51,6 @@ public class CustomerService {
         existCustomer.setProducts(dto.getProducts().stream()
                 .map(productMapper::toEntity)
                 .collect(Collectors.toList()));
-        existCustomer.setUpdatedAt(LocalDateTime.now());
         return mapper.toDTO(customerDB.save(existCustomer));
     }
 

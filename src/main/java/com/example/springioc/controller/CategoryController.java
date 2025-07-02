@@ -21,29 +21,33 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 @RequestMapping("/api/category")
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER') or hasRole('ROLE_CUSTOMER')")
     public ResponseEntity<Optional<CategoryDTO>> GetCategoryByID(@PathVariable Long id){
         return ResponseEntity.ok(categoryService.GetCategoryByID(id));
     }
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER') or hasRole('ROLE_CUSTOMER')")
     public ResponseEntity<List<CategoryDTO>> GetAllCategories(){
         return ResponseEntity.ok(categoryService.GetAllCategories());
     }
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER')")
     public ResponseEntity<CategoryDTO> UpdateCategory(@PathVariable Long id, @RequestBody CategoryDTO categoryDTO) {
         return ResponseEntity.ok(categoryService.UpdateCategory(id, categoryDTO));
     }
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER')")
     public ResponseEntity<String> DeleteCategory(@PathVariable Long id) {
         categoryService.DeleteCategory(id);
         return ResponseEntity.ok("Kategori silindi");
     }
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER')")
     public ResponseEntity<CategoryDTO> CreateCategory(@RequestBody CategoryDTO categoryDTO) {
         return ResponseEntity.ok(categoryService.CreateCategory(categoryDTO));
     }
