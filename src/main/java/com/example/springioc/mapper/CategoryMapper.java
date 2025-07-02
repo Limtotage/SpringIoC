@@ -16,7 +16,10 @@ public interface CategoryMapper {
     @Mapping(target = "products", source = "products")
     CategoryDTO toDTO(Category category);
 
-    @Mapping(target = "products", ignore = true) // sadece id'ler DTO'da, entity'ye çevirirken manuel set edilmeli
+
+    @Mapping(target = "name", source = "name")
+    @Mapping(target = "description", source = "description")
+    @Mapping(target = "products", ignore = true)
     Category toEntity(CategoryDTO dto);
 
     List<ProductDTO> toProductDTOList(List<Product> products);

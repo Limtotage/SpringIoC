@@ -23,4 +23,5 @@ Dockera ve PostreSQL veritabanına geçildi
 Method Based Auth Eklendi
 Onay gereken Kategori Tamamlandı.
 Onay İşlemi yalnızca admin tarafından yapılıyor.
+Post Category name description null dönüyordu düzeltildi.
 
