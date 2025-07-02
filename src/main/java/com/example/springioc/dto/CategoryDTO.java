@@ -9,5 +9,6 @@ public class CategoryDTO {
     private Long id;
     private String name;
     private String description;
-    private List<Long> productIds;
+    private Boolean isApproved;
+    private List<ProductDTO> products;
 }

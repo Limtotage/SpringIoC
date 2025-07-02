@@ -1,5 +1,6 @@
 package com.example.springioc.entity;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,9 +35,12 @@ public class Category {
     @Column(name="CategoryDescription")
     private String description;
 
+    @Column(name="IsApproved")
+    private Boolean isApproved;
+
     @OneToMany(mappedBy="category")
     @JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","products"})
-    private List<Product> products;
+    private List<Product> products = new ArrayList<>();
 
     @ManyToMany(mappedBy = "categories")
     @JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","sellers"})

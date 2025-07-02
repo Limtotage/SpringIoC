@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.springioc.dto.CategoryDTO;
 import com.example.springioc.entity.Category;
-import com.example.springioc.entity.Product;
 import com.example.springioc.mapper.CategoryMapper;
+import com.example.springioc.mapper.ProductMapper;
 import com.example.springioc.repository.CategoryRepo;
 import com.example.springioc.repository.ProductRepo;
 
@@ -26,16 +26,28 @@ public class CategoryService {
     @Autowired
     private ProductRepo productDB;
     @Autowired
+    private ProductMapper productMapper;
+    @Autowired
     private CategoryMapper mapper;
     
-    public CategoryDTO CreateCategory(CategoryDTO dto){
+    public CategoryDTO CreateCategory(CategoryDTO dto, Boolean isApproved) {
         Category category = mapper.toEntity(dto);
+        category.setIsApproved(isApproved);
         Category saved = categoryDB.save(category);
         return mapper.toDTO(saved);
     }
     
     public List<CategoryDTO> GetAllCategories(){
         return categoryDB.findAll().stream().map(mapper::toDTO).collect(Collectors.toList());
+    }
+    public List<CategoryDTO> GetAllApprovedCategories(){
+        return categoryDB.findByIsApprovedTrue().stream().map(mapper::toDTO).collect(Collectors.toList());
+    }
+    public List<CategoryDTO> GetAllUnapprovedCategories(){
+        return categoryDB.findAll().stream()
+                .filter(category -> !category.getIsApproved())
+                .map(mapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     public Optional<CategoryDTO> GetCategoryByID(Long ID){
@@ -48,9 +60,16 @@ public class CategoryService {
                 .orElseThrow(() -> new EntityNotFoundException("Category Not Found"));
         existCategory.setDescription(dto.getDescription());
         existCategory.setName(dto.getName());
-        List<Product> products = dto.getProductIds().stream().map(productid->productDB.findById(productid)
-            .orElseThrow(() -> new EntityNotFoundException("Product not found with id " + productid))).collect(Collectors.toList());
-        existCategory.setProducts(products);
+        existCategory.setProducts(dto.getProducts()
+                                .stream().map(productMapper::toEntity)
+                                .collect(Collectors.toList()));
+        Category updated = categoryDB.save(existCategory);
+        return mapper.toDTO(updated);
+    }
+    public CategoryDTO UpdateCategoryApproval(Long Id, Boolean isApproved) {
+        Category existCategory = categoryDB.findById(Id)
+                .orElseThrow(() -> new EntityNotFoundException("Category Not Found"));
+        existCategory.setIsApproved(true);
         Category updated = categoryDB.save(existCategory);
         return mapper.toDTO(updated);
     }

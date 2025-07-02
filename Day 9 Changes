@@ -21,5 +21,6 @@ Günlük
 Authentication Tamam
 Dockera ve PostreSQL veritabanına geçildi 
 Method Based Auth Eklendi
-Onay gereken daha çok logic mantıklı bir şeyler yapılıyor. burayı salladım.
+Onay gereken Kategori Tamamlandı.
+Onay İşlemi yalnızca admin tarafından yapılıyor.
 
