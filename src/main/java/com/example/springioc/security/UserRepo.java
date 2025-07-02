@@ -8,4 +8,5 @@ import com.example.springioc.entity.MyUser;
 
 public interface UserRepo extends JpaRepository<MyUser, Long> {
     Optional<MyUser> findByUsername(String username);
+    boolean existsByUsername(String username);
 }

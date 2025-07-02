@@ -60,8 +60,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 String usernameLoggedIn = userDetails.getUsername();
                 System.out.println("Logged in User " + usernameLoggedIn + ", IP: " + userIP);
 
-                // İsteğe bağlı: DB'ye log atabilir, son giriş tarihi güncelleyebilirsin
-                // myUserService.updateLastLogin(usernameLoggedIn);
             }
         }
 

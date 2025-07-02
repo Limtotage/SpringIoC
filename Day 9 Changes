@@ -15,7 +15,6 @@ post Autha bak
 
 
 Günlük
-DTO ve Mapperlar Eklendi. Controllerlar ve servisler tamamlandı
-Projeye JJWTLer ve user olarak customerlar eklendi.
-Method Based JJWT yarım kaldı.
+Method Based Auth Geliştiriliyor
+
 
