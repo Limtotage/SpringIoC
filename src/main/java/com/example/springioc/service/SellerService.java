@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.springioc.dto.SellerDTO;
-import com.example.springioc.entity.MyUser;
 import com.example.springioc.entity.Seller;
 import com.example.springioc.mapper.CategoryMapper;
 import com.example.springioc.mapper.ProductMapper;
@@ -45,8 +44,6 @@ public class SellerService {
         if (existingSeller == null) {
             return null;
         }
-        MyUser existUser = existingSeller.getUser();
-        existUser.setUsername(dto.getUsername());
         existingSeller.setCategories(dto.getCategories().stream()
                 .map(categoryMapper::toEntity)
                 .collect(Collectors.toSet()));

@@ -35,8 +35,8 @@ public class Product {
     @Column(name = "ProductStock")
     private int stock;
 
-    @Column(name = "ProductImage")
-    private String imageUrl;
+    public Product() {
+    }
 
     @ManyToOne
     @JoinColumn(name = "Seller_ID")

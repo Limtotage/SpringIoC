@@ -7,9 +7,7 @@ import lombok.Data;
 @Data
 public class SellerDTO {
     private Long id;
-    private String fullname;
-    private String username;
-    private String password;
+    private UserDTO user;
     private List<CategoryDTO> categories;
     private List<ProductDTO> products;
 }

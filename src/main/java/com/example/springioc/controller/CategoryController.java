@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.springioc.dto.ApprovalDTO;
 import com.example.springioc.dto.CategoryDTO;
 import com.example.springioc.service.CategoryService;
-
 
 @RestController
 @RequestMapping("/api/category")
@@ -65,16 +65,11 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.UpdateCategory(id, categoryDTO));
     }
 
-    @PutMapping("/categories/{id}/approved")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> approveCategory(@PathVariable Long id) {
-        return ResponseEntity.ok().build();
-    }
-    
     @PutMapping("/{id}/approved")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<CategoryDTO> UpdateCategoryApproval(@PathVariable Long id, @RequestBody Boolean isApproved) {
-        return ResponseEntity.ok(categoryService.UpdateCategoryApproval(id, isApproved));
+    public ResponseEntity<CategoryDTO> UpdateCategoryApproval(@PathVariable Long id,
+            @RequestBody ApprovalDTO approvalDTO) {
+        return ResponseEntity.ok(categoryService.UpdateCategoryApproval(id, approvalDTO.getIsApproved()));
     }
 
     @DeleteMapping("/{id}")

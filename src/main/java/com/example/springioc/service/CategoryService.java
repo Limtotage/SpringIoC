@@ -69,7 +69,7 @@ public class CategoryService {
     public CategoryDTO UpdateCategoryApproval(Long Id, Boolean isApproved) {
         Category existCategory = categoryDB.findById(Id)
                 .orElseThrow(() -> new EntityNotFoundException("Category Not Found"));
-        existCategory.setIsApproved(true);
+        existCategory.setIsApproved(isApproved);
         Category updated = categoryDB.save(existCategory);
         return mapper.toDTO(updated);
     }

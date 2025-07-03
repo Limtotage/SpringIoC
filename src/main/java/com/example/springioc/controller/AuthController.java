@@ -25,12 +25,10 @@ import com.example.springioc.entity.Customer;
 import com.example.springioc.entity.MyUser;
 import com.example.springioc.entity.Role;
 import com.example.springioc.entity.Seller;
-import com.example.springioc.mapper.CustomerMapper;
-import com.example.springioc.mapper.SellerMapper;
-import com.example.springioc.security.RoleRepo;
-import com.example.springioc.security.UserRepo;
 import com.example.springioc.repository.CustomerRepo;
 import com.example.springioc.repository.SellerRepo;
+import com.example.springioc.security.RoleRepo;
+import com.example.springioc.security.UserRepo;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -72,6 +70,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
         MyUser user = new MyUser();
+        user.setFullname(registerRequest.getFullname());
         user.setUsername(registerRequest.getUsername());
         user.setPassword(registerRequest.getPassword());
 
@@ -102,6 +101,7 @@ public class AuthController {
         }
         return ResponseEntity.ok(new RegisterResponse(
                 "User registered successfully",
+                user.getFullname(),
                 user.getUsername(),
                 user.getRoles().stream().map(Role::getName).collect(Collectors.joining(", "))));
     }
