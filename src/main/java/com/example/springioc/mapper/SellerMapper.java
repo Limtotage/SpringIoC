@@ -16,17 +16,11 @@ import com.example.springioc.entity.Seller;
 @Mapper(componentModel = "spring")
 public interface SellerMapper {
 
-    @Mapping(source = "categories", target = "categories")
     @Mapping(source = "products", target = "products")
     SellerDTO toDTO(Seller seller);
 
-    @Mapping(target = "categories", source = "categories")
     @Mapping(target = "products", source = "products")
     Seller toEntity(SellerDTO dto);
-
-    List<CategoryDTO> toCategoryDTOList(List<Category> categories);
-
-    List<Category> toCategoryEntityList(List<CategoryDTO> dtos);
 
     List<ProductDTO> toProductDTOList(List<Product> products);
 

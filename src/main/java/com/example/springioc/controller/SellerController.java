@@ -2,7 +2,6 @@ package com.example.springioc.controller;
 
 import java.util.List;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,7 +40,7 @@ public class SellerController {
         return ResponseEntity.ok(sellerService.UpdateSeller(id, sellerDTO));
     }
     @DeleteMapping("/{id}")
-    @PreAuthorize("#id == authentication.principal.id or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_SELLER')")
     public ResponseEntity<String> DeleteSeller(@PathVariable Long id) {
         sellerService.DeleteSeller(id);
         return ResponseEntity.ok("Seller deleted successfully");

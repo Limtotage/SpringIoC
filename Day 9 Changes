@@ -19,5 +19,6 @@ post Autha bak
 
 Günlük
 MyUser ile giriş bilgileri satıcı ya da Customera iletildi.
-Veritabanında bağlantı hataları giderildi İşte Set Categorye set Seller Olsun vb şeyler
+Product , Seller, Categories, Arasındaki bağlantı düzeltildi.
+Product kaldırma Sellerı silmez fakat Sellerı Silmek myUSer ve Sellerı iler şeklinde. Kısaca bağlantılar düzeltildi.
 

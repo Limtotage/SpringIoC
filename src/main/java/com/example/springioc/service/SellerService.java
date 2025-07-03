@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.springioc.dto.SellerDTO;
 import com.example.springioc.entity.Seller;
@@ -13,6 +16,7 @@ import com.example.springioc.mapper.ProductMapper;
 import com.example.springioc.mapper.SellerMapper;
 import com.example.springioc.repository.SellerRepo;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -39,21 +43,31 @@ public class SellerService {
                 .map(mapper::toDTO)
                 .collect(Collectors.toList());
     }
+
     public SellerDTO UpdateSeller(Long id, SellerDTO dto) {
         Seller existingSeller = sellerDB.findById(id).orElse(null);
         if (existingSeller == null) {
             return null;
         }
-        existingSeller.setCategories(dto.getCategories().stream()
-                .map(categoryMapper::toEntity)
-                .collect(Collectors.toSet()));
         existingSeller.setProducts(dto.getProducts().stream()
                 .map(product -> productMapper.toEntity(product))
                 .collect(Collectors.toList()));
         Seller updatedSeller = sellerDB.save(existingSeller);
         return mapper.toDTO(updatedSeller);
     }
+
+    @Transactional
     public void DeleteSeller(Long id) {
-        sellerDB.deleteById(id);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
+        Long userId = userDetails.getId();
+        Seller seller = sellerDB.findByUser_Id(userId)
+                .orElseThrow(() -> new EntityNotFoundException("Seller not found for user ID: " + userId));
+        if (!seller.getId().equals(id)) {
+            throw new EntityNotFoundException("You can only delete your own seller account");
+        }
+        else {
+            sellerDB.delete(seller);
+        }
     }
 }
