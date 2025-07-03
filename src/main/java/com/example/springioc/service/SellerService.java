@@ -59,11 +59,17 @@ public class SellerService {
     @Transactional
     public void DeleteSeller(Long id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+        if (isAdmin) {
+            sellerDB.deleteById(id);
+            return;
+        }
         MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
         Long userId = userDetails.getId();
         Seller seller = sellerDB.findByUser_Id(userId)
                 .orElseThrow(() -> new EntityNotFoundException("Seller not found for user ID: " + userId));
-        if (!seller.getId().equals(id)) {
+        if (!seller.getId().equals(id) ) {
             throw new EntityNotFoundException("You can only delete your own seller account");
         }
         else {
