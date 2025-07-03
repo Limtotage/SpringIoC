@@ -18,12 +18,10 @@ public interface SellerMapper {
 
     @Mapping(source = "categories", target = "categories")
     @Mapping(source = "products", target = "products")
-    @Mapping(target = "password", ignore = true)
     SellerDTO toDTO(Seller seller);
 
     @Mapping(target = "categories", source = "categories")
     @Mapping(target = "products", source = "products")
-    @Mapping(target = "password", ignore = true)
     Seller toEntity(SellerDTO dto);
 
     List<CategoryDTO> toCategoryDTOList(List<Category> categories);

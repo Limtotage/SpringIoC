@@ -1,6 +1,5 @@
 package com.example.springioc.entity;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,9 +10,9 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,14 +27,10 @@ public class Customer {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "fullname")
-    private String fullname;
 
-    @Column(name="username")
-    private String username;
-
-    @Column(name = "password")
-    private String password;
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private MyUser user;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Product> products = new ArrayList<>();

@@ -2,6 +2,7 @@ package com.example.springioc.entity;
 
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,7 +28,10 @@ public class MyUser {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "username")
+    @Column(name = "fullname")
+    private String fullname;
+
+    @Column(name="username")
     private String username;
 
     @Column(name = "password")
@@ -35,6 +40,11 @@ public class MyUser {
     @Column(name = "is_enabled")
     private boolean enabled = true;
 
+    @OneToOne(mappedBy = "user", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+    private Customer customer;
+
+    @OneToOne(mappedBy = "user", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+    private Seller seller;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

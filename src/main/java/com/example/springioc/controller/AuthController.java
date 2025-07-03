@@ -21,10 +21,16 @@ import com.example.springioc.dto.AuthRequest;
 import com.example.springioc.dto.AuthResponse;
 import com.example.springioc.dto.RegisterRequest;
 import com.example.springioc.dto.RegisterResponse;
+import com.example.springioc.entity.Customer;
 import com.example.springioc.entity.MyUser;
 import com.example.springioc.entity.Role;
+import com.example.springioc.entity.Seller;
+import com.example.springioc.mapper.CustomerMapper;
+import com.example.springioc.mapper.SellerMapper;
 import com.example.springioc.security.RoleRepo;
 import com.example.springioc.security.UserRepo;
+import com.example.springioc.repository.CustomerRepo;
+import com.example.springioc.repository.SellerRepo;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -42,11 +48,16 @@ public class AuthController {
     private RoleRepo roleDB;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private CustomerRepo customerDB;
+    @Autowired
+    private SellerRepo sellerDB;
 
     @GetMapping
     public ResponseEntity<?> home() {
         return ResponseEntity.ok("Welcome to the Spring IoC Application!");
     }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {
         authManager.authenticate(
@@ -80,6 +91,15 @@ public class AuthController {
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDB.save(user);
+        if (user.getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_CUSTOMER"))) {
+            Customer customer = new Customer();
+            customer.setUser(user);
+            customerDB.save(customer);
+        } else if (user.getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_SELLER"))) {
+            Seller seller = new Seller();
+            seller.setUser(user);
+            sellerDB.save(seller);
+        }
         return ResponseEntity.ok(new RegisterResponse(
                 "User registered successfully",
                 user.getUsername(),

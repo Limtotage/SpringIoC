@@ -16,6 +16,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,14 +31,9 @@ public class Seller {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "fullname")
-    private String fullname;
-
-    @Column(name = "username")
-    private String username;
-
-    @Column(name = "password")
-    private String password;
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private MyUser user;
 
     @ManyToMany
     @JoinTable(name = "seller_category",

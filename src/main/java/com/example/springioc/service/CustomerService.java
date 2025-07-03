@@ -1,6 +1,5 @@
 package com.example.springioc.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.springioc.dto.CustomerDTO;
 import com.example.springioc.entity.Customer;
+import com.example.springioc.entity.MyUser;
 import com.example.springioc.mapper.CustomerMapper;
 import com.example.springioc.mapper.ProductMapper;
 import com.example.springioc.repository.CustomerRepo;
@@ -47,7 +47,9 @@ public class CustomerService {
     public CustomerDTO UpdateCustomer(Long Id, CustomerDTO dto) {
         Customer existCustomer = customerDB.findById(Id)
                 .orElseThrow(() -> new EntityNotFoundException("Customer Not Found"));
-        existCustomer.setFullname(dto.getFullname());
+
+        MyUser existUser = existCustomer.getUser();
+        existUser.setUsername(dto.getUsername());
         existCustomer.setProducts(dto.getProducts().stream()
                 .map(productMapper::toEntity)
                 .collect(Collectors.toList()));
