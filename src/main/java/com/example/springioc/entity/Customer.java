@@ -28,7 +28,7 @@ public class Customer {
     private Long id;
 
 
-    @OneToOne
+    @OneToOne(cascade= CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private MyUser user;
 

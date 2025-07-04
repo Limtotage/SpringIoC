@@ -7,7 +7,6 @@ import lombok.Data;
 @Data
 public class SellerDTO {
     private Long id;
-    private UserDTO user;
-    private List<CategoryDTO> categories;
+    private String username;
     private List<ProductDTO> products;
 }

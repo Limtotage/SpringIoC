@@ -35,7 +35,7 @@ public class SellerController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("#id == authentication.principal.id or hasRole('ROLE_ADMIN')")
+    @PreAuthorize(" hasAnyRole('ROLE_ADMIN','ROLE_SELLER')")
     public ResponseEntity<SellerDTO> UpdateSeller(@PathVariable Long id, @RequestBody SellerDTO sellerDTO) {
         return ResponseEntity.ok(sellerService.UpdateSeller(id, sellerDTO));
     }

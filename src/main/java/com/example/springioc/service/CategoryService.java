@@ -17,7 +17,6 @@ import com.example.springioc.repository.ProductRepo;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
-
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
@@ -29,43 +28,46 @@ public class CategoryService {
     private ProductMapper productMapper;
     @Autowired
     private CategoryMapper mapper;
-    
+
     public CategoryDTO CreateCategory(CategoryDTO dto, Boolean isApproved) {
         Category category = mapper.toEntity(dto);
         category.setIsApproved(isApproved);
         Category saved = categoryDB.save(category);
         return mapper.toDTO(saved);
     }
-    
-    public List<CategoryDTO> GetAllCategories(){
+
+    public List<CategoryDTO> GetAllCategories() {
         return categoryDB.findAll().stream().map(mapper::toDTO).collect(Collectors.toList());
     }
-    public List<CategoryDTO> GetAllApprovedCategories(){
+
+    public List<CategoryDTO> GetAllApprovedCategories() {
         return categoryDB.findByIsApprovedTrue().stream().map(mapper::toDTO).collect(Collectors.toList());
     }
-    public List<CategoryDTO> GetAllUnapprovedCategories(){
+
+    public List<CategoryDTO> GetAllUnapprovedCategories() {
         return categoryDB.findAll().stream()
                 .filter(category -> !category.getIsApproved())
                 .map(mapper::toDTO)
                 .collect(Collectors.toList());
     }
 
-    public Optional<CategoryDTO> GetCategoryByID(Long ID){
+    public Optional<CategoryDTO> GetCategoryByID(Long ID) {
         return categoryDB.findById(ID).map(mapper::toDTO);
-    } 
-
+    }
 
     public CategoryDTO UpdateCategory(Long Id, CategoryDTO dto) {
         Category existCategory = categoryDB.findById(Id)
                 .orElseThrow(() -> new EntityNotFoundException("Category Not Found"));
+
         existCategory.setDescription(dto.getDescription());
         existCategory.setName(dto.getName());
         existCategory.setProducts(dto.getProducts()
-                                .stream().map(productMapper::toEntity)
-                                .collect(Collectors.toList()));
+                .stream().map(productMapper::toEntity)
+                .collect(Collectors.toList()));
         Category updated = categoryDB.save(existCategory);
         return mapper.toDTO(updated);
     }
+
     public CategoryDTO UpdateCategoryApproval(Long Id, Boolean isApproved) {
         Category existCategory = categoryDB.findById(Id)
                 .orElseThrow(() -> new EntityNotFoundException("Category Not Found"));

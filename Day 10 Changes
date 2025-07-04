@@ -18,7 +18,6 @@ post Autha bak
 
 
 Günlük
-MyUser ile giriş bilgileri satıcı ya da Customera iletildi.
-Product , Seller, Categories, Arasındaki bağlantı düzeltildi.
-Product kaldırma Sellerı silmez fakat Sellerı Silmek myUSer ve Sellerı iler şeklinde. Kısaca bağlantılar düzeltildi.
+Entitylerin basit crudd işlemlerindeki hatalar düzeltildi.
+Admin Panel Geliştiriliyor.
 

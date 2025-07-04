@@ -23,7 +23,7 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CUSTOMER') or hasRole('ROLE_SELLER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CUSTOMER')")
     @PostMapping
     public ResponseEntity<CustomerDTO> CreateCustomer(@RequestBody CustomerDTO customerDTO) {
         return ResponseEntity.ok(customerService.RegisterCustomer(customerDTO));
@@ -36,13 +36,13 @@ public class CustomerController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("#id == authentication.principal.id or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
     public ResponseEntity<CustomerDTO> UpdateCustomer(@PathVariable Long id, @RequestBody CustomerDTO customerDTO) {
         return ResponseEntity.ok(customerService.UpdateCustomer(id, customerDTO));
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("#id == authentication.principal.id or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
     public ResponseEntity<String> DeleteCustomer(@PathVariable Long id) {
         customerService.DeleteCustomer(id);
         return ResponseEntity.ok("Customer deleted successfully");
