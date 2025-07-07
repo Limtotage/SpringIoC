@@ -79,6 +79,7 @@ public class AuthController {
                     .orElseThrow(() -> new RuntimeException("Default role not found"));
             user.setRoles(Set.of(defaultRole));
         } else {
+            
             Set<Role> attachedRoles = registerRequest.getRoles().stream()
                     .map(roleName -> roleDB.findByName(roleName)
                             .orElseThrow(() -> new RuntimeException("Role not found: " + roleName)))
