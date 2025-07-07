@@ -1,5 +1,6 @@
 package com.example.springioc.controller;
 
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.springioc.components.AuthComponents;
 import com.example.springioc.config.JwtUtil;
 import com.example.springioc.dto.AuthRequest;
 import com.example.springioc.dto.AuthResponse;
@@ -29,6 +31,8 @@ import com.example.springioc.repository.CustomerRepo;
 import com.example.springioc.repository.SellerRepo;
 import com.example.springioc.security.RoleRepo;
 import com.example.springioc.security.UserRepo;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -50,10 +54,25 @@ public class AuthController {
     private CustomerRepo customerDB;
     @Autowired
     private SellerRepo sellerDB;
+    @Autowired
+    private AuthComponents authComponents;
 
     @GetMapping
     public ResponseEntity<?> home() {
         return ResponseEntity.ok("Welcome to the Spring IoC Application!");
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getCurrentUser() {
+        Long userId = authComponents.getCurrentUserId();
+        MyUser user = userDB.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + userId));
+        System.out.println("Current User ID: " + user);
+        return ResponseEntity.ok(Map.of(
+                "id", user.getId(),
+                "username", user.getUsername(),
+                "fullname", user.getFullname(),
+                "roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList())));
     }
 
     @PostMapping("/login")
@@ -79,7 +98,7 @@ public class AuthController {
                     .orElseThrow(() -> new RuntimeException("Default role not found"));
             user.setRoles(Set.of(defaultRole));
         } else {
-            
+
             Set<Role> attachedRoles = registerRequest.getRoles().stream()
                     .map(roleName -> roleDB.findByName(roleName)
                             .orElseThrow(() -> new RuntimeException("Role not found: " + roleName)))

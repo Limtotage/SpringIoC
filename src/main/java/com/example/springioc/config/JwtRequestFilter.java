@@ -55,10 +55,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                         userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                // Post-authentication işlemleri (Örnek)
-                String userIP = request.getRemoteAddr();
-                String usernameLoggedIn = userDetails.getUsername();
-                System.out.println("Logged in User " + usernameLoggedIn + ", IP: " + userIP);
 
             }
         }
