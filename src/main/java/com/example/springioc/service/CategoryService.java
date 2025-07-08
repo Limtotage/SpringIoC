@@ -63,7 +63,7 @@ public class CategoryService {
         existCategory.setName(dto.getName());
         existCategory.setProducts(dto.getProducts()
                 .stream().map(productMapper::toEntity)
-                .collect(Collectors.toList()));
+                .collect().toList());
         Category updated = categoryDB.save(existCategory);
         return mapper.toDTO(updated);
     }

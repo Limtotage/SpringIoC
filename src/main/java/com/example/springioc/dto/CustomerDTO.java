@@ -12,5 +12,5 @@ public class CustomerDTO {
     private String fullname;
     private String username;
     private String password;
-    private List<ProductDTO> products;
+    private List<Long> productsIds;
 }

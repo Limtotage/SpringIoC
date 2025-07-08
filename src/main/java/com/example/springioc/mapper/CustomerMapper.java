@@ -1,15 +1,38 @@
 package com.example.springioc.mapper;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
 import com.example.springioc.dto.CustomerDTO;
 import com.example.springioc.entity.Customer;
+import com.example.springioc.entity.Product;
 
-@Mapper(componentModel = "spring", uses = ProductMapper.class)
+@Mapper(componentModel = "spring")
 public interface CustomerMapper {
-    
-    CustomerDTO toDTO(Customer seller);
+    @Mapping(target = "productsIds", source = "products", qualifiedByName = "mapProductsToIds")
+    CustomerDTO toDTO(Customer customer);
 
+    @Mapping(target = "products", source = "productsIds", qualifiedByName = "mapIdsToProducts")
     Customer toEntity(CustomerDTO dto);
+
+    @Named("mapProductsToIds")
+    default List<Long> mapProductsToIds(List<Product> products) {
+        if (products == null)
+            return null;
+        return products.stream().map(Product::getId).toList();
+    }
+
+    @Named("mapIdsToProducts")
+    default List<Product> mapIdsToProducts(List<Long> ids) {
+        if (ids == null)
+            return null;
+        return ids.stream().map(id -> {
+            Product p = new Product();
+            p.setId(id);
+            return p;
+        }).toList();
+    }
 }

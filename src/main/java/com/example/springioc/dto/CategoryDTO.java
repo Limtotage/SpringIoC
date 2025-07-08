@@ -10,5 +10,5 @@ public class CategoryDTO {
     private String name;
     private String description;
     private Boolean isApproved;
-    private List<ProductDTO> products;
+    private List<Long> productsIds;
 }
