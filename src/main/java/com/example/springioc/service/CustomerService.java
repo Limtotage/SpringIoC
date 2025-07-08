@@ -56,8 +56,7 @@ public class CustomerService {
 
         if (!targetCustomer.getId().equals(ownerSeller.getId()) && !isAdmin) {
             throw new EntityNotFoundException("You can only update your own Customer account");
-        }
-        else{
+        } else {
             MyUser existUser = targetCustomer.getUser();
             existUser.setFullname(dto.getFullname());
             existUser.setUsername(dto.getUsername());
@@ -68,16 +67,20 @@ public class CustomerService {
         }
     }
 
-    public void DeleteCustomer(Long Id) {
+    public void DeleteCustomer(Long id) {
         boolean isAdmin = authComponents.isAdmin();
-        Long userId = authComponents.getCurrentUserId();
-        Customer customer = customerDB.findByUser_Id(userId)
-                .orElseThrow(() -> new EntityNotFoundException("Customer not found for user ID: " + userId));
-        if (!customer.getId().equals(Id) && !isAdmin) {
+        Long currentUserId = authComponents.getCurrentUserId();
+
+        // Silinecek customer'ı user_id'ye göre bul
+        Customer customerToDelete = customerDB.findByUser_Id(id)
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found for user ID: " + id));
+
+        // Eğer kullanıcı kendi hesabını siliyorsa veya admin ise izin ver
+        if (!currentUserId.equals(id) && !isAdmin) {
             throw new EntityNotFoundException("You can only delete your own customer account");
-        } else {
-            customerDB.delete(customer);
         }
+
+        customerDB.delete(customerToDelete);
     }
 
 }

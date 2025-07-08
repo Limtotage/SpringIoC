@@ -19,4 +19,5 @@ post Autha bak
 
 Günlük
 Put işlemleri için gereken diğer dtolar düzenleniyor ve sadece ürün idsi şeklinde ayarlanıyor kullanıcı sadece idleri gönderir idler productdb de eşleştirirlir ve çıktı verilir.
+Ürün DTosu içerisinde başka bir dto bulunmaması gerekir.
 
