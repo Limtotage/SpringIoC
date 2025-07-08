@@ -32,11 +32,13 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrfCustomizer -> csrfCustomizer.disable())
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**").permitAll()
+                .cors(Customizer.withDefaults())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
                         .requestMatchers("/api/product/**").hasAnyRole("CUSTOMER", "ADMIN", "SELLER")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/seller/**").hasAnyRole("ADMIN", "SELLER")
                         .requestMatchers("/api/customer/**").hasAnyRole("ADMIN", "CUSTOMER", "SELLER")
+                        .requestMatchers("/api/auth/me").authenticated()
                         .requestMatchers("/api/swagger-ui/**",
                                 "/api/v3/api-docs/**")
                         .permitAll()
@@ -45,6 +47,19 @@ public class SecurityConfig {
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class).build();
     }
 
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:4200")); // Angular origin
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setExposedHeaders(List.of("Authorization")); // Token’a erişim için
+        configuration.setAllowCredentials(true); // Gerekli olabilir
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {

@@ -55,10 +55,11 @@ public class CustomerService {
                 .orElseThrow(() -> new EntityNotFoundException("Customer Not Found"));
 
         if (!targetCustomer.getId().equals(ownerSeller.getId()) && !isAdmin) {
-            throw new EntityNotFoundException("You can only update your own seller account");
+            throw new EntityNotFoundException("You can only update your own Customer account");
         }
         else{
             MyUser existUser = targetCustomer.getUser();
+            existUser.setFullname(dto.getFullname());
             existUser.setUsername(dto.getUsername());
             targetCustomer.setProducts(dto.getProducts().stream()
                     .map(productMapper::toEntity)
