@@ -21,5 +21,10 @@ Günlük
 Servisler Düzenleniyor.
 Backendlerdeki bazı hatalar giderildi. Örn: product Role bazlı security hatası 
 sadece satıcıya ait Get Ürün listesi fonksiyonu eklendi.
+Customer - Product ilişkisi many to many Hale getirldi
+Customer için gelen idler ile bağlantı koparma yapıldı 
+
+
+Customer silme amny to many ilişkisinden sonra bozuldu düzeltilmeli.
 
 

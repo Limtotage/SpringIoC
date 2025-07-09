@@ -2,11 +2,9 @@ package com.example.springioc.dto;
 
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class CustomerDTO {
     private Long id;
     private String fullname;

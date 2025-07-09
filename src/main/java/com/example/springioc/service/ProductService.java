@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 import com.example.springioc.components.AuthComponents;
 import com.example.springioc.dto.ProductDTO;
 import com.example.springioc.entity.Category;
+import com.example.springioc.entity.Customer;
 import com.example.springioc.entity.Product;
 import com.example.springioc.entity.Seller;
 import com.example.springioc.mapper.ProductMapper;
 import com.example.springioc.repository.CategoryRepo;
+import com.example.springioc.repository.CustomerRepo;
 import com.example.springioc.repository.ProductRepo;
 import com.example.springioc.repository.SellerRepo;
 
@@ -35,11 +37,20 @@ public class ProductService {
     @Autowired
     private SellerRepo sellerDB;
 
+    @Autowired
+    private CustomerRepo customerDB;
+
     public List<ProductDTO> getProductsByUserId(Long userId) {
         Seller seller = sellerDB.findByUser_Id(userId)
                 .orElseThrow(() -> new EntityNotFoundException("Seller not found for user ID: " + userId));
 
         List<Product> products = productDB.findBySeller(seller);
+        return products.stream().map(mapper::toDTO).toList();
+    }
+    public List<ProductDTO> GetProductsByCustomer(Long userId) {
+        Customer customer = customerDB.findByUser_Id(userId)
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found for user ID: " + userId));
+        List<Product> products = productDB.findByCustomer(customer);
         return products.stream().map(mapper::toDTO).toList();
     }
 
