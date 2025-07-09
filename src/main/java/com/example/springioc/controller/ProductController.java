@@ -5,8 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,12 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.springioc.dto.ProductDTO;
-import com.example.springioc.entity.Seller;
 import com.example.springioc.repository.SellerRepo;
-import com.example.springioc.service.MyUserDetails;
 import com.example.springioc.service.ProductService;
-
-import jakarta.persistence.EntityNotFoundException;
 
 @RestController
 @RequestMapping("/api/product")
@@ -46,8 +40,8 @@ public class ProductController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER') or hasRole('ROLE_CUSTOMER')")
-    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
-        return ResponseEntity.ok(productService.GetProductByID(id));
+    public ResponseEntity<List<ProductDTO>> GetProductBySeller(@PathVariable Long id) {
+        return ResponseEntity.ok(productService.getProductsByUserId(id));
     }
 
     @PutMapping("/{id}")

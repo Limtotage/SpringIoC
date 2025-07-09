@@ -19,4 +19,7 @@ post Autha bak
 
 Günlük
 Servisler Düzenleniyor.
+Backendlerdeki bazı hatalar giderildi. Örn: product Role bazlı security hatası 
+sadece satıcıya ait Get Ürün listesi fonksiyonu eklendi.
+
 
