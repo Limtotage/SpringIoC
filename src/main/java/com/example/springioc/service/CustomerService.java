@@ -10,8 +10,9 @@ import com.example.springioc.components.AuthComponents;
 import com.example.springioc.dto.CustomerDTO;
 import com.example.springioc.entity.Customer;
 import com.example.springioc.entity.MyUser;
+import com.example.springioc.entity.Product;
+import com.example.springioc.repository.ProductRepo;
 import com.example.springioc.mapper.CustomerMapper;
-import com.example.springioc.mapper.ProductMapper;
 import com.example.springioc.repository.CustomerRepo;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -24,9 +25,11 @@ public class CustomerService {
     private CustomerRepo customerDB;
 
     @Autowired
-    private CustomerMapper mapper;
+    private ProductRepo productDB;
+
     @Autowired
-    private ProductMapper productMapper;
+    private CustomerMapper mapper;
+
     @Autowired
     private AuthComponents authComponents;
 
@@ -60,9 +63,12 @@ public class CustomerService {
             MyUser existUser = targetCustomer.getUser();
             existUser.setFullname(dto.getFullname());
             existUser.setUsername(dto.getUsername());
-            targetCustomer.setProducts(dto.getProducts().stream()
-                    .map(productMapper::toEntity)
-                    .collect(Collectors.toList()));
+            List<Product> updatedProducts = dto.getProductsIds().stream()
+                        .map(productId-> productDB.findById(productId)
+                        .orElseThrow(() -> new EntityNotFoundException("Product not found for ID: " + productId)))
+                        .toList();
+            targetCustomer.getProducts().clear();
+            targetCustomer.getProducts().addAll(updatedProducts);
             return mapper.toDTO(customerDB.save(targetCustomer));
         }
     }

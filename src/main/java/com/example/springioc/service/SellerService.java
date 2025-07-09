@@ -15,6 +15,7 @@ import com.example.springioc.entity.Seller;
 import com.example.springioc.mapper.CategoryMapper;
 import com.example.springioc.mapper.ProductMapper;
 import com.example.springioc.mapper.SellerMapper;
+import com.example.springioc.repository.ProductRepo;
 import com.example.springioc.repository.SellerRepo;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -25,6 +26,8 @@ import lombok.RequiredArgsConstructor;
 public class SellerService {
     @Autowired
     private SellerRepo sellerDB;
+    @Autowired
+    private ProductRepo productDB;
 
     @Autowired
     private SellerMapper mapper;
@@ -50,23 +53,21 @@ public class SellerService {
     public SellerDTO UpdateSeller(Long id, SellerDTO dto) {
         boolean isAdmin = authComponents.isAdmin();
         Long userId = authComponents.getCurrentUserId();
-        Seller ownerSeller = sellerDB.findByUser_Id(userId)
+        Seller currentSeller = sellerDB.findByUser_Id(userId)
                 .orElseThrow(() -> new EntityNotFoundException("Seller not found for user ID: " + userId));
         Seller targetSeller = sellerDB.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Seller not found for ID: " + id));
-        if (!targetSeller.getId().equals(ownerSeller.getId()) && !isAdmin) {
+        if (!targetSeller.getId().equals(currentSeller.getId()) && !isAdmin) {
             throw new EntityNotFoundException("You can only update your own seller account");
-        } else {
-            MyUser existUser = targetSeller.getUser();
-            existUser.setUsername(dto.getUsername());
-            List<Product> updatedProducts = dto.getProducts().stream()
-                    .map(productMapper::toEntity)
-                    .collect(Collectors.toList());
-            targetSeller.getProducts().clear();
-            targetSeller.getProducts().addAll(updatedProducts);
-            Seller updatedSeller = sellerDB.save(targetSeller);
-            return mapper.toDTO(updatedSeller);
         }
+        MyUser existUser = targetSeller.getUser();
+        existUser.setUsername(dto.getUsername());
+        List<Product> updatedProducts = dto.getProductsIds().stream().map(productId -> productDB.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found for ID: " + productId))).toList();
+        targetSeller.getProducts().clear();
+        targetSeller.getProducts().addAll(updatedProducts);
+        Seller updatedSeller = sellerDB.save(targetSeller);
+        return mapper.toDTO(updatedSeller);
     }
 
     @Transactional
@@ -77,8 +78,7 @@ public class SellerService {
                 .orElseThrow(() -> new EntityNotFoundException("Seller not found for user ID: " + userId));
         if (!seller.getId().equals(id) && !isAdmin) {
             throw new EntityNotFoundException("You can only delete your own seller account");
-        } else {
-            sellerDB.delete(seller);
         }
+        sellerDB.delete(seller);
     }
 }

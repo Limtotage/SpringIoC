@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.springioc.dto.CategoryDTO;
 import com.example.springioc.entity.Category;
+import com.example.springioc.entity.Product;
 import com.example.springioc.mapper.CategoryMapper;
 import com.example.springioc.mapper.ProductMapper;
 import com.example.springioc.repository.CategoryRepo;
@@ -61,9 +62,11 @@ public class CategoryService {
 
         existCategory.setDescription(dto.getDescription());
         existCategory.setName(dto.getName());
-        existCategory.setProducts(dto.getProducts()
-                .stream().map(productMapper::toEntity)
-                .collect().toList());
+        List<Product> updatedProducts = dto.getProductsIds().stream()
+                .map(productIds -> productDB.findById(productIds).orElseThrow(() -> new EntityNotFoundException("Product Not Found with ID: " + productIds)))
+                .toList();
+        existCategory.getProducts().clear();
+        existCategory.getProducts().addAll(updatedProducts);
         Category updated = categoryDB.save(existCategory);
         return mapper.toDTO(updated);
     }
