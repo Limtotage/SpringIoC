@@ -18,13 +18,7 @@ post Autha bak
 
 
 Günlük
-Servisler Düzenleniyor.
-Backendlerdeki bazı hatalar giderildi. Örn: product Role bazlı security hatası 
-sadece satıcıya ait Get Ürün listesi fonksiyonu eklendi.
-Customer - Product ilişkisi many to many Hale getirldi
-Customer için gelen idler ile bağlantı koparma yapıldı 
+Customer Entitysindeki silme sorunu one to many ilişkisinden kalmış bir hata. Many to many yapısına göre oluşturulmadığı için sorun yaşıyoruz.
 
-
-Customer silme amny to many ilişkisinden sonra bozuldu düzeltilmeli.
 
 

@@ -126,14 +126,14 @@ public class CustomerService {
         if (!currentUserId.equals(id) && !isAdmin) {
             throw new EntityNotFoundException("You can only delete your own customer account");
         }
-
-        // İlişkiyi çift yönlü olarak temizle
-        for (Product product : new ArrayList<>(customerToDelete.getProducts())) {
-            product.getCustomers().remove(customerToDelete);
+        if (customerToDelete.getProducts() != null && !customerToDelete.getProducts().isEmpty()) {
+            for (Product product : new ArrayList<>(customerToDelete.getProducts())) {
+                product.getCustomers().remove(customerToDelete); // çift yönlü ilişki siliniyor
+            }
+            customerToDelete.getProducts().clear(); // tek yönlü ilişki temizleniyor
+            customerDB.save(customerToDelete); // flush öncesi durum
         }
-        customerToDelete.getProducts().clear();
 
-        customerDB.save(customerToDelete); // Bu önemli! Değişiklikleri flush et
         customerDB.delete(customerToDelete);
     }
 
