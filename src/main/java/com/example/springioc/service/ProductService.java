@@ -40,13 +40,14 @@ public class ProductService {
     @Autowired
     private CustomerRepo customerDB;
 
-    public List<ProductDTO> getProductsByUserId(Long userId) {
+    public List<ProductDTO> getProductsBySeller(Long userId) {
         Seller seller = sellerDB.findByUser_Id(userId)
                 .orElseThrow(() -> new EntityNotFoundException("Seller not found for user ID: " + userId));
 
         List<Product> products = productDB.findBySeller(seller);
         return products.stream().map(mapper::toDTO).toList();
     }
+
     public List<ProductDTO> GetProductsByCustomer(Long userId) {
         Customer customer = customerDB.findByUser_Id(userId)
                 .orElseThrow(() -> new EntityNotFoundException("Customer not found for user ID: " + userId));
@@ -60,14 +61,20 @@ public class ProductService {
 
     public ProductDTO CreateProduct(ProductDTO productDTO) {
         Product product = mapper.toEntity(productDTO);
+
         Category category = categoryDB.findById(productDTO.getCategoryId())
                 .orElseThrow(() -> new EntityNotFoundException("Category Not Found"));
+
         Long userId = authComponents.getCurrentUserId();
+
         Seller seller = sellerDB.findByUser_Id(userId)
                 .orElseThrow(() -> new EntityNotFoundException("Seller not found for user ID: " + userId));
+
         product.setSeller(seller);
         product.setCategory(category);
+
         Product saved = productDB.save(product);
+
         return mapper.toDTO(saved);
     }
 

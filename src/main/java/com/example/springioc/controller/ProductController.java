@@ -26,9 +26,15 @@ public class ProductController {
     @Autowired
     private SellerRepo sellerDB;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO product) {
+    public ResponseEntity<ProductDTO> createProductAdmin(@RequestBody ProductDTO product) {
+        return ResponseEntity.ok(productService.CreateProduct(product));
+    }
+
+    @PreAuthorize("hasRole('ROLE_SELLER')")
+    @PostMapping("/seller")
+    public ResponseEntity<ProductDTO> createProductSeller(@RequestBody ProductDTO product) {
         return ResponseEntity.ok(productService.CreateProduct(product));
     }
 
@@ -38,16 +44,17 @@ public class ProductController {
         return ResponseEntity.ok(productService.GetAllProducts());
     }
 
-    @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER') or hasRole('ROLE_CUSTOMER')")
+    @GetMapping("/seller/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER')")
     public ResponseEntity<List<ProductDTO>> GetProductBySeller(@PathVariable Long id) {
-        return ResponseEntity.ok(productService.getProductsByUserId(id));
+        return ResponseEntity.ok(productService.getProductsBySeller(id));
     }
+
     @GetMapping("/customer/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CUSTOMER')")
     public ResponseEntity<List<ProductDTO>> GetProductByCustomer(@PathVariable Long id) {
         return ResponseEntity.ok(productService.GetProductsByCustomer(id));
-    } 
+    }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER')")

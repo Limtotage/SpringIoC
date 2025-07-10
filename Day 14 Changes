@@ -19,6 +19,5 @@ post Autha bak
 
 Günlük
 Customer Entitysindeki silme sorunu one to many ilişkisinden kalmış bir hata. Many to many yapısına göre oluşturulmadığı için sorun yaşıyoruz.
-
-
+Seller DELTEte sıkıntı mevcur JWT token doğrulamada
 
