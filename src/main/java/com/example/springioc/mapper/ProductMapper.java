@@ -9,13 +9,11 @@ import com.example.springioc.entity.Product;
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
 
-    @Mapping(target = "categoryId", source = "category.id")
+    @Mapping(target = "categoryName", source = "category.name")
     ProductDTO toDTO(Product product);
 
     @Mapping(target = "category", ignore = true)
     @Mapping(target = "customers", ignore = true)
     @Mapping(target = "seller", ignore = true)
     Product toEntity(ProductDTO dto);
-
-
 }

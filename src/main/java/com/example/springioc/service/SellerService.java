@@ -74,12 +74,20 @@ public class SellerService {
     public void DeleteSeller(Long id) {
         boolean isAdmin = authComponents.isAdmin();
         Long userId = authComponents.getCurrentUserId();
+        System.out.println("User ID: " + userId + ", Seller ID: " + id);
         Seller seller = sellerDB.findByUser_Id(userId)
                 .orElseThrow(() -> new EntityNotFoundException("Seller not found for user ID: " + userId));
-        if (!seller.getId().equals(id) && !isAdmin) {
+        if (!userId.equals(id) && !isAdmin) {
             throw new EntityNotFoundException("You can only delete your own seller account");
+        }
+        List<Product> products = productDB.findBySeller(seller);
+        for (Product product : products) {
+            product.getCustomers().forEach(c -> c.getProducts().remove(product));
+            product.getCustomers().clear();
+            product.setSeller(null); 
+            productDB.save(product); 
         }
         sellerDB.delete(seller);
     }
-    
+
 }

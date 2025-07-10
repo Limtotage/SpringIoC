@@ -59,10 +59,20 @@ public class ProductService {
         return productDB.findAll().stream().map(mapper::toDTO).toList();
     }
 
+    public List<ProductDTO> GetProductsByCategory(String categoryName) {
+        Category category = categoryDB.findByName(categoryName)
+                .orElseThrow(() -> new EntityNotFoundException("Category Not Found"));
+        return productDB.findByCategory(category).stream().map(mapper::toDTO).toList();
+    }
+
     public ProductDTO CreateProduct(ProductDTO productDTO) {
+        System.out.println("Creating product: " + productDTO);
+        if (productDTO.getCategoryName() == null || productDTO.getCategoryName().isBlank()) {
+            throw new IllegalArgumentException("Category name cannot be null or empty");
+        }
         Product product = mapper.toEntity(productDTO);
 
-        Category category = categoryDB.findById(productDTO.getCategoryId())
+        Category category = categoryDB.findByName(productDTO.getCategoryName())
                 .orElseThrow(() -> new EntityNotFoundException("Category Not Found"));
 
         Long userId = authComponents.getCurrentUserId();
@@ -87,7 +97,7 @@ public class ProductService {
         existProduct.setName(dto.getName());
         existProduct.setPrice(dto.getPrice());
         existProduct.setStock(dto.getStock());
-        Category category = categoryDB.findById(dto.getCategoryId())
+        Category category = categoryDB.findByName(dto.getCategoryName())
                 .orElseThrow(() -> new EntityNotFoundException("Category Not Found"));
         existProduct.setCategory(category);
         return mapper.toDTO(productDB.save(existProduct));
@@ -97,14 +107,15 @@ public class ProductService {
         boolean isAdmin = authComponents.isAdmin();
         Long currentUserId = authComponents.getCurrentUserId();
 
-        // Silinecek customer'ı user_id'ye göre bul
         Product existProduct = productDB.findById(Id).orElseThrow(() -> new RuntimeException("Product Not Found"));
 
-        // Eğer kullanıcı kendi hesabını siliyorsa veya admin ise izin ver
         if (!currentUserId.equals(existProduct.getSeller().getUser().getId()) && !isAdmin) {
             throw new EntityNotFoundException("You can only delete your own product");
         }
-
+        existProduct.getCustomers().forEach(c -> c.getProducts().remove(existProduct));
+        existProduct.getCustomers().clear();
+        existProduct.setSeller(null);
+        productDB.save(existProduct);
         productDB.delete(existProduct);
     }
 }
