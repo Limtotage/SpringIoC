@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,6 +70,19 @@ public class AuthController {
         Long userId = authComponents.getCurrentUserId();
         MyUser user = userDB.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + userId));
+        return ResponseEntity.ok(Map.of(
+                "id", user.getId(),
+                "username", user.getUsername(),
+                "fullname", user.getFullname(),
+                "roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList())));
+    }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/seller/{id}")
+    public ResponseEntity<?> getSellerById(@PathVariable Long id) {
+        MyUser user = sellerDB.findUserBySellerID(id);
+        if (user == null) {
+            throw new EntityNotFoundException("User not found with ID: " + id);
+        }
         return ResponseEntity.ok(Map.of(
                 "id", user.getId(),
                 "username", user.getUsername(),

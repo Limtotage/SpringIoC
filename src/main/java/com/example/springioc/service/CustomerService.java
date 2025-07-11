@@ -137,4 +137,19 @@ public class CustomerService {
         customerDB.delete(customerToDelete);
     }
 
+    @Transactional
+    public void DeleteCustomerAdmin(Long id) {
+        Customer customerToDelete = customerDB.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found for user ID: " + id));
+
+        if (customerToDelete.getProducts() != null && !customerToDelete.getProducts().isEmpty()) {
+            for (Product product : new ArrayList<>(customerToDelete.getProducts())) {
+                product.getCustomers().remove(customerToDelete); // çift yönlü ilişki siliniyor
+            }
+            customerToDelete.getProducts().clear(); // tek yönlü ilişki temizleniyor
+            customerDB.save(customerToDelete); // flush öncesi durum
+        }
+        customerDB.delete(customerToDelete);
+    }
+
 }

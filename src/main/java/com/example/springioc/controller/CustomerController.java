@@ -56,9 +56,16 @@ public class CustomerController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     public ResponseEntity<String> DeleteCustomer(@PathVariable Long id) {
         customerService.DeleteCustomer(id);
+        return ResponseEntity.ok("Customer deleted successfully");
+    }
+
+    @DeleteMapping("/admin/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<String> DeleteCustomerAdmin(@PathVariable Long id) {
+        customerService.DeleteCustomerAdmin(id);
         return ResponseEntity.ok("Customer deleted successfully");
     }
 }

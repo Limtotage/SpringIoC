@@ -1,6 +1,9 @@
 package com.example.springioc.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +47,21 @@ public class SellerService {
         return mapper.toDTO(saved);
     }
 
-    public List<SellerDTO> GetAllSellers() {
-        return sellerDB.findAll().stream()
-                .map(mapper::toDTO)
-                .collect(Collectors.toList());
+    public List<Map<String, Object>>  GetAllSellers() {
+        List<Seller> sellers = sellerDB.findAll();
+        List<Map<String, Object>> response = new ArrayList<>();
+
+        for (Seller seller : sellers) {
+            MyUser user = seller.getUser(); // Eğer Seller içinde `MyUser user` varsa
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", seller.getId());
+            map.put("username", user.getUsername());
+            map.put("fullname", user.getFullname());
+            map.put("productsIds", seller.getProducts().stream().map(Product::getId).collect(Collectors.toList()));
+            response.add(map);
+        }
+        return response;
     }
 
     public SellerDTO UpdateSeller(Long id, SellerDTO dto) {
@@ -60,8 +74,6 @@ public class SellerService {
         if (!targetSeller.getId().equals(currentSeller.getId()) && !isAdmin) {
             throw new EntityNotFoundException("You can only update your own seller account");
         }
-        MyUser existUser = targetSeller.getUser();
-        existUser.setUsername(dto.getUsername());
         List<Product> updatedProducts = dto.getProductsIds().stream().map(productId -> productDB.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found for ID: " + productId))).toList();
         targetSeller.getProducts().clear();
@@ -84,8 +96,22 @@ public class SellerService {
         for (Product product : products) {
             product.getCustomers().forEach(c -> c.getProducts().remove(product));
             product.getCustomers().clear();
-            product.setSeller(null); 
-            productDB.save(product); 
+            product.setSeller(null);
+            productDB.save(product);
+        }
+        sellerDB.delete(seller);
+    }
+
+    @Transactional
+    public void DeleteSellerAdmin(Long id) {
+        Seller seller = sellerDB.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Seller not found for ID: " + id));
+        List<Product> products = productDB.findBySeller(seller);
+        for (Product product : products) {
+            product.getCustomers().forEach(c -> c.getProducts().remove(product));
+            product.getCustomers().clear();
+            product.setSeller(null);
+            productDB.save(product);
         }
         sellerDB.delete(seller);
     }

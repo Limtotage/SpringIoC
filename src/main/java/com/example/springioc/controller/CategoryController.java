@@ -65,7 +65,7 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.UpdateCategory(id, categoryDTO));
     }
 
-    @PutMapping("/{id}/approved")
+    @PutMapping("/unapproved/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<CategoryDTO> UpdateCategoryApproval(@PathVariable Long id,
             @RequestBody ApprovalDTO approvalDTO) {

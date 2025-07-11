@@ -7,6 +7,5 @@ import lombok.Data;
 @Data
 public class SellerDTO {
     private Long id;
-    private String username;
     private List<Long> productsIds;
 }

@@ -62,7 +62,8 @@ public class CategoryService {
 
         existCategory.setName(dto.getName());
         List<Product> updatedProducts = dto.getProductsIds().stream()
-                .map(productIds -> productDB.findById(productIds).orElseThrow(() -> new EntityNotFoundException("Product Not Found with ID: " + productIds)))
+                .map(productIds -> productDB.findById(productIds)
+                        .orElseThrow(() -> new EntityNotFoundException("Product Not Found with ID: " + productIds)))
                 .toList();
         existCategory.getProducts().clear();
         existCategory.getProducts().addAll(updatedProducts);
@@ -78,7 +79,31 @@ public class CategoryService {
         return mapper.toDTO(updated);
     }
 
+    public Category ensureUncategorizedCategoryExists() {
+        return categoryDB.findByName("Uncategorized")
+                .orElseGet(() -> {
+                    Category uncategorized = new Category();
+                    uncategorized.setName("Uncategorized");
+                    uncategorized.setIsApproved(true); 
+                    return categoryDB.save(uncategorized);
+                });
+    }
+
     public void DeleteCategory(Long Id) {
+        Category categoryToDelete = categoryDB.findById(Id)
+                .orElseThrow(() -> new EntityNotFoundException("Category Not Found"));
+        if (categoryToDelete.getName().equals("Uncategorized")) {
+            throw new IllegalArgumentException("Cannot delete the Uncategorized category");
+        }
+        List<Product> productsWithCategory = productDB.findByCategory(categoryToDelete);
+
+        if (!productsWithCategory.isEmpty()) {
+            Category uncategorized = ensureUncategorizedCategoryExists();
+            for (Product product : productsWithCategory) {
+                product.setCategory(uncategorized);
+            }
+            productDB.saveAll(productsWithCategory);
+        }
         categoryDB.deleteById(Id);
     }
 }
