@@ -11,6 +11,8 @@ import com.example.springioc.entity.Category;
 
 public interface CategoryRepo extends JpaRepository<Category, Long> {
     List<Category> findByIsApprovedTrue();
+    
+    List<Category> findByIsApprovedFalse();
 
     @Query("SELECT c FROM Category c WHERE c.name = :name")
     Optional<Category> findByName(@Param("name") String name);

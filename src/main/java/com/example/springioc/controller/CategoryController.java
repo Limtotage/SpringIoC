@@ -48,7 +48,7 @@ public class CategoryController {
     }
 
     @GetMapping("/approved")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_SELLER','ROLE_CUSTOMER')")
     public ResponseEntity<List<CategoryDTO>> GetAllApprovedCategories() {
         return ResponseEntity.ok(categoryService.GetAllApprovedCategories());
     }

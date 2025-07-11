@@ -56,6 +56,12 @@ public class ProductController {
         return ResponseEntity.ok(productService.GetProductsByCustomer(id));
     }
 
+    @GetMapping("/category/{categoryName}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CUSTOMER','ROLE_SELLER')")
+    public ResponseEntity<List<ProductDTO>> GetProductByCategory(@PathVariable String categoryName) {
+        return ResponseEntity.ok(productService.GetProductsByCategory(categoryName));
+    }
+
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SELLER')")
     public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody ProductDTO product) {

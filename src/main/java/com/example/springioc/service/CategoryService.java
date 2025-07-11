@@ -60,7 +60,6 @@ public class CategoryService {
         Category existCategory = categoryDB.findById(Id)
                 .orElseThrow(() -> new EntityNotFoundException("Category Not Found"));
 
-        existCategory.setDescription(dto.getDescription());
         existCategory.setName(dto.getName());
         List<Product> updatedProducts = dto.getProductsIds().stream()
                 .map(productIds -> productDB.findById(productIds).orElseThrow(() -> new EntityNotFoundException("Product Not Found with ID: " + productIds)))
