@@ -41,20 +41,6 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.UpdateCustomer(id, customerDTO));
     }
 
-    @PutMapping("/addProduct/{customerId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
-    public ResponseEntity<?> AddProducts(@PathVariable Long customerId, @RequestBody List<Long> productIds) {
-        customerService.AddProductToCustomer(customerId, productIds);
-        return ResponseEntity.ok().build();
-    }
-
-    @PutMapping("/removeProduct/{customerId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
-    public ResponseEntity<?> RemoveProducts(@PathVariable Long customerId, @RequestBody List<Long> productIds) {
-        customerService.RemoveProductFromCustomer(customerId, productIds);
-        return ResponseEntity.ok().build();
-    }
-
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     public ResponseEntity<String> DeleteCustomer(@PathVariable Long id) {

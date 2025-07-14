@@ -50,12 +50,6 @@ public class ProductController {
         return ResponseEntity.ok(productService.getProductsBySeller(id));
     }
 
-    @GetMapping("/customer/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CUSTOMER')")
-    public ResponseEntity<List<ProductDTO>> GetProductByCustomer(@PathVariable Long id) {
-        return ResponseEntity.ok(productService.GetProductsByCustomer(id));
-    }
-
     @GetMapping("/category/{categoryName}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_CUSTOMER','ROLE_SELLER')")
     public ResponseEntity<List<ProductDTO>> GetProductByCategory(@PathVariable String categoryName) {

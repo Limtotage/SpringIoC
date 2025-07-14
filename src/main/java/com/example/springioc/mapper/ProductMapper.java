@@ -13,7 +13,6 @@ public interface ProductMapper {
     ProductDTO toDTO(Product product);
 
     @Mapping(target = "category", ignore = true)
-    @Mapping(target = "customers", ignore = true)
     @Mapping(target = "seller", ignore = true)
     Product toEntity(ProductDTO dto);
 }

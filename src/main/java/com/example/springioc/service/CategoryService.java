@@ -4,14 +4,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.springioc.dto.CategoryDTO;
 import com.example.springioc.entity.Category;
 import com.example.springioc.entity.Product;
 import com.example.springioc.mapper.CategoryMapper;
-import com.example.springioc.mapper.ProductMapper;
 import com.example.springioc.repository.CategoryRepo;
 import com.example.springioc.repository.ProductRepo;
 
@@ -21,14 +19,9 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
-    @Autowired
-    private CategoryRepo categoryDB;
-    @Autowired
-    private ProductRepo productDB;
-    @Autowired
-    private ProductMapper productMapper;
-    @Autowired
-    private CategoryMapper mapper;
+    private final CategoryRepo categoryDB;
+    private final ProductRepo productDB;
+    private final CategoryMapper mapper;
 
     public CategoryDTO CreateCategory(CategoryDTO dto, Boolean isApproved) {
         Category category = mapper.toEntity(dto);

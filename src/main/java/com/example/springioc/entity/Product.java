@@ -1,8 +1,6 @@
 package com.example.springioc.entity;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -12,7 +10,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -49,9 +46,6 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "Category_ID")
     private Category category;
-
-    @ManyToMany(mappedBy = "products")
-    private List<Customer> customers = new ArrayList<>();
 
     @OneToMany(mappedBy = "product")
     private Set<CartItem> cartItems = new HashSet<>();
