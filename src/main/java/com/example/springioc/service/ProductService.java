@@ -96,7 +96,6 @@ public class ProductService {
         }
         existProduct.setName(dto.getName());
         existProduct.setPrice(dto.getPrice());
-        existProduct.setStock(dto.getStock());
         Category category = categoryDB.findByName(dto.getCategoryName())
                 .orElseThrow(() -> new EntityNotFoundException("Category Not Found"));
         existProduct.setCategory(category);

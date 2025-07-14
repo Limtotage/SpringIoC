@@ -32,8 +32,11 @@ public class Customer {
     @JoinColumn(name = "user_id", nullable = false)
     private MyUser user;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(name = "customer_products", joinColumns = @JoinColumn(name = "customer_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private List<Product> products = new ArrayList<>();
+    private List<Product> products = new ArrayList<>();//Kalkacak
+
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    private Cart cart;
 
 }
