@@ -30,21 +30,17 @@ public class CartController {
     @Autowired
     private CustomerRepo customerDB;
 
-    private Cart getCartByCustomer(Long customerId) {
-        return customerDB.findById(customerId)
-                .orElseThrow(() -> new EntityNotFoundException("Cart not found for customer ID: " + customerId))
-                .getCart();
-
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<CartDTO> getCart(@PathVariable Long id) {
         Cart cart = getCartByCustomer(id);
+        if (cart == null) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok(cartService.getCart(cart));
     }
 
     @PostMapping("/add/{id}")
-    public ResponseEntity<Void> addItem(@PathVariable Long id,@RequestBody CartItemDTO dto) {
+    public ResponseEntity<Void> addItem(@PathVariable Long id, @RequestBody CartItemDTO dto) {
         Cart cart = getCartByCustomer(id);
         cartService.addItemToCart(cart, dto.getProductId(), dto.getQuantity());
         return ResponseEntity.ok().build();
@@ -67,5 +63,13 @@ public class CartController {
         Cart cart = getCartByCustomer(customerId);
         cartService.clearCart(cart);
         return ResponseEntity.noContent().build();
+    }
+
+    // Yardımcı Method
+    private Cart getCartByCustomer(Long userId) {
+        return customerDB.findByUser_Id(userId)
+                .orElseThrow(() -> new EntityNotFoundException("Cart not found for user ID: " + userId))
+                .getCart();
+
     }
 }

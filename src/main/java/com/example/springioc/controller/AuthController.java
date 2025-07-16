@@ -25,16 +25,19 @@ import com.example.springioc.dto.AuthRequest;
 import com.example.springioc.dto.AuthResponse;
 import com.example.springioc.dto.RegisterRequest;
 import com.example.springioc.dto.RegisterResponse;
+import com.example.springioc.entity.Cart;
 import com.example.springioc.entity.Customer;
 import com.example.springioc.entity.MyUser;
 import com.example.springioc.entity.Role;
 import com.example.springioc.entity.Seller;
+import com.example.springioc.repository.CartRepo;
 import com.example.springioc.repository.CustomerRepo;
 import com.example.springioc.repository.SellerRepo;
 import com.example.springioc.security.RoleRepo;
 import com.example.springioc.security.UserRepo;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -57,6 +60,8 @@ public class AuthController {
     @Autowired
     private SellerRepo sellerDB;
     @Autowired
+    private CartRepo cartDB;
+    @Autowired
     private AuthComponents authComponents;
 
     @GetMapping
@@ -76,6 +81,7 @@ public class AuthController {
                 "fullname", user.getFullname(),
                 "roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList())));
     }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/seller/{id}")
     public ResponseEntity<?> getSellerById(@PathVariable Long id) {
@@ -101,6 +107,7 @@ public class AuthController {
         return ResponseEntity.ok(new AuthResponse(token));
     }
 
+    @Transactional
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
         MyUser user = new MyUser();
@@ -133,6 +140,13 @@ public class AuthController {
             Seller seller = new Seller();
             seller.setUser(user);
             sellerDB.save(seller);
+        }
+        if(user.getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_CUSTOMER"))) {
+            Customer customer = customerDB.findByUser_Id(user.getId())
+                .orElseThrow(() -> new RuntimeException("Customer not found for user: " + user.getUsername()));
+            Cart cart = new Cart();
+            cart.setCustomer(customer);
+            cartDB.save(cart);
         }
         return ResponseEntity.ok(new RegisterResponse(
                 "User registered successfully",

@@ -1,6 +1,10 @@
 package com.example.springioc.entity;
 
+import com.example.springioc.enums.StockStatus;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,6 +23,8 @@ public class Stock {
 
     private int stockQuantity=0;
 
+    @Enumerated(EnumType.STRING)
+    private StockStatus stockStatus;
 
     @OneToOne
     @JoinColumn(name = "product_id")
