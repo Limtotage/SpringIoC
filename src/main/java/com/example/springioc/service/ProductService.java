@@ -9,6 +9,7 @@ import com.example.springioc.dto.ProductDTO;
 import com.example.springioc.entity.Category;
 import com.example.springioc.entity.Product;
 import com.example.springioc.entity.Seller;
+import com.example.springioc.entity.Stock;
 import com.example.springioc.mapper.ProductMapper;
 import com.example.springioc.repository.CategoryRepo;
 import com.example.springioc.repository.ProductRepo;
@@ -26,7 +27,6 @@ public class ProductService {
     private final ProductMapper mapper;
     private final AuthComponents authComponents;
     private final SellerRepo sellerDB;
-
 
     public List<ProductDTO> getProductsBySeller(Long userId) {
         Seller seller = sellerDB.findByUser_Id(userId)
@@ -62,6 +62,11 @@ public class ProductService {
         product.setSeller(seller);
         product.setCategory(category);
 
+        Stock stock = new Stock();
+        stock.setStockQuantity(productDTO.getProductStock() != null ? productDTO.getProductStock() : 0);
+        stock.setProduct(product);
+        product.setStock(stock);
+
         Product saved = productDB.save(product);
 
         return mapper.toDTO(saved);
@@ -77,6 +82,9 @@ public class ProductService {
         existProduct.setPrice(dto.getPrice());
         Category category = categoryDB.findByName(dto.getCategoryName())
                 .orElseThrow(() -> new EntityNotFoundException("Category Not Found"));
+        if (dto.getProductStock() != null && existProduct.getStock() != null) {
+            existProduct.getStock().setStockQuantity(dto.getProductStock());
+        }
         existProduct.setCategory(category);
         return mapper.toDTO(productDB.save(existProduct));
     }

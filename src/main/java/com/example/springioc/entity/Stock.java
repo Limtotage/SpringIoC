@@ -17,7 +17,7 @@ public class Stock {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int stockQuantity;
+    private int stockQuantity=0;
 
 
     @OneToOne

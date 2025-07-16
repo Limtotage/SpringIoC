@@ -50,7 +50,7 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private Set<CartItem> cartItems = new HashSet<>();
     
-    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL,orphanRemoval = true)
     private Stock stock;
 
 }
