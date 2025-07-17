@@ -2,8 +2,10 @@ package com.example.springioc.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -11,10 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.springioc.components.AuthComponents;
 import com.example.springioc.dto.SellerDTO;
+import com.example.springioc.entity.CartItem;
 import com.example.springioc.entity.MyUser;
 import com.example.springioc.entity.Product;
 import com.example.springioc.entity.Seller;
 import com.example.springioc.mapper.SellerMapper;
+import com.example.springioc.repository.CartItemRepo;
 import com.example.springioc.repository.ProductRepo;
 import com.example.springioc.repository.SellerRepo;
 
@@ -26,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 public class SellerService {
     private final SellerRepo sellerDB;
     private final ProductRepo productDB;
+    private final CartItemRepo cartItemDB;
     private final SellerMapper mapper;
     private final AuthComponents authComponents;
 
@@ -35,7 +40,7 @@ public class SellerService {
         return mapper.toDTO(saved);
     }
 
-    public List<Map<String, Object>>  GetAllSellers() {
+    public List<Map<String, Object>> GetAllSellers() {
         List<Seller> sellers = sellerDB.findAll();
         List<Map<String, Object>> response = new ArrayList<>();
 
@@ -81,10 +86,18 @@ public class SellerService {
             throw new EntityNotFoundException("You can only delete your own seller account");
         }
         List<Product> products = productDB.findBySeller(seller);
+
         for (Product product : products) {
-            product.setSeller(null);
-            productDB.save(product);
+
+            Set<CartItem> items = new HashSet<>(product.getCartItems());
+            for (CartItem item : items) {
+                item.setProduct(null); 
+                cartItemDB.delete(item);
+            }
+
+            productDB.delete(product);
         }
+
         sellerDB.delete(seller);
     }
 

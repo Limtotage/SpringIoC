@@ -27,6 +27,7 @@ public interface CartItemMapper {
     @Mapping(target = "productId", source = "product.id")
     @Mapping(target = "productName", source = "product.name")
     @Mapping(target = "productPrice", source = "product.price")
+    @Mapping(target = "categoryName", source = "product.category.name")
     @Mapping(target = "stockStatus", ignore = true)
     @Mapping(target = "stockQuantity", ignore = true)
     CartItemDetailedDTO toDetailedDTO(CartItem cartItem);

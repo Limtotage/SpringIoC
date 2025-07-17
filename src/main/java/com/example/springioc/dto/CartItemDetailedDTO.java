@@ -11,6 +11,7 @@ public class CartItemDetailedDTO {
     private int stockQuantity;
     private Long productId;
     private String productName;
+    private String categoryName;
     private double productPrice;
     private StockStatus stockStatus;
 

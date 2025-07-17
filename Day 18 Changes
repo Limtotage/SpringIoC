@@ -1,5 +1,6 @@
 Günlük
 Customer Stock Cart işlemleri tamam
+Paymentta hata var zaten teknik olarak yarım yaptım.
 
 Admin Delete Hariç Şu Anlık tamamlandı.
 Stock Uyarısınıda düzenlemek lazım 403 hatası verip duruyor onun yerine mesaj versin uyarı stok yetersizdir diye.
