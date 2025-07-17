@@ -43,18 +43,24 @@ public class CartController {
 
     @PostMapping("/add/{user_id}")
     @PreAuthorize("hasRole('ROLE_CUSTOMER') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Void> addItem(@PathVariable Long user_id, @RequestBody CartItemDTO dto) {
+    public ResponseEntity<String> addItem(@PathVariable Long user_id, @RequestBody CartItemDTO dto) {
         Cart cart = getCartByCustomer(user_id);
         cartService.addItemToCart(cart, dto.getProductId(), dto.getQuantity());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("Item added to cart successfully");
     }
 
     // Sepeti boşalt
-    @DeleteMapping("/{customerId}/clear")
-    public ResponseEntity<Void> clearCart(@PathVariable Long customerId) {
+    @DeleteMapping("/clear/{customerId}")
+    public ResponseEntity<String> clearCart(@PathVariable Long customerId) {
         Cart cart = getCartByCustomer(customerId);
         cartService.clearCart(cart);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("Cart cleared successfully");
+    }
+    @DeleteMapping("/confirm/{customerId}")
+    public ResponseEntity<String> ConfirmCart(@PathVariable Long customerId) {
+        Cart cart = getCartByCustomer(customerId);
+        cartService.ConfirmCart(cart);
+        return ResponseEntity.ok("Cart confirmed successfully");
     }
 
     // Yardımcı Method

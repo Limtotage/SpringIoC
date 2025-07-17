@@ -8,10 +8,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.springioc.components.AuthComponents;
 import com.example.springioc.dto.CustomerDTO;
+import com.example.springioc.entity.Cart;
+import com.example.springioc.entity.CartItem;
 import com.example.springioc.entity.Customer;
 import com.example.springioc.entity.MyUser;
+import com.example.springioc.entity.Stock;
 import com.example.springioc.mapper.CustomerMapper;
 import com.example.springioc.repository.CustomerRepo;
+import com.example.springioc.repository.StockRepo;
 import com.example.springioc.security.UserRepo;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -22,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class CustomerService {
     private final CustomerRepo customerDB;
     private final UserRepo userDB;
+    private final StockRepo stockDB;
     private final CustomerMapper mapper;
     private final AuthComponents authComponents;
 
@@ -61,18 +66,26 @@ public class CustomerService {
 
     @Transactional
     public void DeleteCustomer(Long id) {
-        userDB.deleteById(id);
-        // boolean isAdmin = authComponents.isAdmin();
-        // Long currentUserId = authComponents.getCurrentUserId();
+        boolean isAdmin = authComponents.isAdmin();
+        Long currentUserId = authComponents.getCurrentUserId();
 
-        // Customer customerToDelete = customerDB.findByUser_Id(id)
-        //         .orElseThrow(() -> new EntityNotFoundException("Customer not found for user ID: " + id));
+        Customer customerToDelete = customerDB.findByUser_Id(id)
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found for user ID: " + id));
 
-        // if (!currentUserId.equals(id) && !isAdmin) {
-        //     throw new EntityNotFoundException("You can only delete your own customer account");
-        // }
+        if (!currentUserId.equals(id) && !isAdmin) {
+            throw new EntityNotFoundException("You can only delete your own customer account");
+        }
+        Cart cart = customerDB.findByUser_Id(currentUserId)
+                .orElseThrow(() -> new EntityNotFoundException("Cart not found for user ID: " + id))
+                .getCart();
+        for (CartItem item : cart.getItems()) {
+            Stock stock = stockDB.findByProduct_Id(item.getProduct().getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Stock not found"));
+            stock.setStockQuantity(stock.getStockQuantity() + item.getQuantity());
+            stockDB.save(stock);// Remove the association with the cart
+        }
 
-        // customerDB.delete(customerToDelete);
+        customerDB.delete(customerToDelete);
     }
 
     @Transactional

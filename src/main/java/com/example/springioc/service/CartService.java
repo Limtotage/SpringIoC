@@ -96,4 +96,12 @@ public class CartService {
         cart.setTotalPrice(0.0);
         cartDB.save(cart);
     }
+
+    public void ConfirmCart(Cart cart) {
+        if (cart.getItems().isEmpty())
+            return;
+        cart.getItems().clear();
+        cart.setTotalPrice(0.0);
+        cartDB.save(cart);
+    }
 }
