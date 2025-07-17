@@ -12,7 +12,6 @@ public interface ProductMapper {
 
     @Mapping(target = "categoryName", source = "category.name")
     @Mapping(target = "productStock", source = "stock.stockQuantity")
-    @Mapping(target="stockStatus", expression = "java(determineStockStatus(product.getStock().getStockQuantity()))")
     ProductDTO toDTO(Product product);
 
     @Mapping(target = "category", ignore = true)
@@ -20,13 +19,5 @@ public interface ProductMapper {
     @Mapping(target = "stock", ignore = true)
     Product toEntity(ProductDTO dto);
 
-    default StockStatus determineStockStatus(int quantity) {
-        if (quantity == 0) {
-            return StockStatus.OUT_OF_STOCK;
-        } else if (quantity <= 10) {
-            return StockStatus.LOW_STOCK;
-        } else {
-            return StockStatus.IN_STOCK;
-        }
-    }
+
 }

@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,6 +42,12 @@ public class CartItemController {
         System.out.println("\n \nIncrease item quantity");
         cartItemService.IncreaseItemQuantity(id);
         return ResponseEntity.ok().build();
+    }
+    @DeleteMapping("/remove/{id}")
+    @PreAuthorize("hasRole('ROLE_CUSTOMER') or hasRole('ROLE_ADMIN')")
+    public ResponseEntity<String> removeItem(@PathVariable Long id) {
+        cartItemService.DeleteCartItem(id);
+        return ResponseEntity.ok("Item removed successfully");
     }
 
 }

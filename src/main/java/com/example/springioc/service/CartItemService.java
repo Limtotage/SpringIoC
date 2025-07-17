@@ -68,9 +68,11 @@ public class CartItemService {
     }
 
     public void DeleteCartItem(Long id) {
-        if (!cartItemDB.existsById(id)) {
-            throw new EntityNotFoundException("Cart item not found with ID: " + id);
-        }
+        CartItem cartItem = cartItemDB.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Cart item not found with ID: " + id));
+        Stock stock = stockDB.findByProduct_Id(cartItem.getProduct().getId())
+                .orElseThrow(() -> new EntityNotFoundException("Stock not found"));
+        stock.setStockQuantity(stock.getStockQuantity() + cartItem.getQuantity());
         cartItemDB.deleteById(id);
     }
 

@@ -14,7 +14,6 @@ import com.example.springioc.components.AuthComponents;
 import com.example.springioc.dto.CartDTO;
 import com.example.springioc.dto.CartItemDTO;
 import com.example.springioc.entity.Cart;
-import com.example.springioc.mapper.CartItemMapper;
 import com.example.springioc.repository.CustomerRepo;
 import com.example.springioc.service.CartService;
 
@@ -48,17 +47,6 @@ public class CartController {
         Cart cart = getCartByCustomer(user_id);
         cartService.addItemToCart(cart, dto.getProductId(), dto.getQuantity());
         return ResponseEntity.ok().build();
-    }
-
-    // Ürün çıkar
-    @DeleteMapping("/{customerId}/remove/{productId}")
-    public ResponseEntity<Void> removeItem(
-            @PathVariable Long customerId,
-            @PathVariable Long productId) {
-
-        Cart cart = getCartByCustomer(customerId);
-        cartService.RemoveItemFromCart(cart, productId);
-        return ResponseEntity.noContent().build();
     }
 
     // Sepeti boşalt
