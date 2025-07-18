@@ -2,6 +2,7 @@ package com.example.springioc.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,16 +34,22 @@ public class CartItemController {
     public ResponseEntity<Void> decreaseItemQuantity(@PathVariable Long id) {
         System.out.println("\n\n Decrease item quantity");
         cartItemService.DecreaseItemQuantity(id);
-        return ResponseEntity.ok().build(); 
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/increase/{id}")
     @PreAuthorize("hasRole('ROLE_CUSTOMER') or hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Void> increaseItemQuantity(@PathVariable Long id) {
-        System.out.println("\n \nIncrease item quantity");
-        cartItemService.IncreaseItemQuantity(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<?> increaseItemQuantity(@PathVariable Long id) {
+        try {
+            cartItemService.IncreaseItemQuantity(id);
+            return ResponseEntity.ok().build();
+        } catch (IllegalStateException e) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Stokta yeterli ürün yok.");
+        }
     }
+
     @DeleteMapping("/remove/{id}")
     @PreAuthorize("hasRole('ROLE_CUSTOMER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> removeItem(@PathVariable Long id) {

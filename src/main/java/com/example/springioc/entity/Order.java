@@ -1,44 +1,35 @@
 package com.example.springioc.entity;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
-import jakarta.persistence.CascadeType;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
+@Table(name = "orders")
 @Getter
 @Setter
-@Table(name = "Payment")
 public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-
-    private String cardNumber;
-    private String cardHolderName;
-    private String expiryMonth;
-    private String expiryYear;
-    private String cvc;
-
-
     @ManyToOne
+    @JoinColumn(name = "customer_id") // foreign key
     private Customer customer;
 
-    private Double totalPaid;
     private LocalDateTime orderDate;
+    private Double totalPrice;
 
-
-    @OneToMany(mappedBy="order",cascade = CascadeType.ALL)
-    private Set<CartItem> orderHistory = new HashSet<>();
+    @ElementCollection
+    private List<OrderItemEmbedded> items;
 }

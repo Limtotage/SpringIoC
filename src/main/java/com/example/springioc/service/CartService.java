@@ -34,15 +34,20 @@ public class CartService {
         return cartMapper.toDto(cart);
     }
 
-    public void addItemToCart(Cart cart, Long productId, int quantity) {
+    public String addItemToCart(Cart cart, Long productId, int quantity) {
+        String msg = "";
         Product product = productDB.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with ID: " + productId));
         Stock stock = stockDB.findByProduct_Id(productId)
                 .orElseThrow(() -> new EntityNotFoundException("Stock not found for product ID: " + productId));
-
-        if (stock.getStockQuantity() < quantity) {
-            throw new IllegalStateException("Insufficient stock");
+        if (stock.getStockQuantity() <= 0) {
+            msg = "Stokta yeterli ürün yok.";
+            return msg;
         }
+        if (stock.getStockQuantity() < quantity) {
+            msg = "Stokta yeterli ürün yok. " + stock.getStockQuantity() + " adet eklendi.";
+        }
+        int addedQuantity = Math.min(quantity, stock.getStockQuantity());
 
         CartItem existingItem = cart.getItems().stream()
                 .filter(item -> item.getProduct().getId().equals(productId))
@@ -50,20 +55,21 @@ public class CartService {
                 .orElse(null);
 
         if (existingItem != null) {
-            existingItem.setQuantity(existingItem.getQuantity() + quantity);
+            existingItem.setQuantity(existingItem.getQuantity() + addedQuantity);
         } else {
             CartItem newItem = new CartItem();
             newItem.setProduct(product);
-            newItem.setQuantity(quantity);
+            newItem.setQuantity(addedQuantity);
             newItem.setCart(cart);
             cart.getItems().add(newItem);
         }
         cart.calculateTotalPrice();
 
-        stock.setStockQuantity(stock.getStockQuantity() - quantity);
+        stock.setStockQuantity(stock.getStockQuantity() - addedQuantity);
         stockDB.save(stock);
 
         cartDB.save(cart);
+        return msg.isEmpty() ? "Item added to cart successfully" : msg;
     }
 
     public void RemoveItemFromCart(Cart cart, Long productId) {

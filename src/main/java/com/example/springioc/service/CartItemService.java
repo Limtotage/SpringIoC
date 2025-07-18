@@ -38,7 +38,6 @@ public class CartItemService {
     public List<CartItemDetailedDTO> getAllCartItems(long user_id) {
         Cart cart = getCartByCustomer(user_id);
         return cart.getItems().stream()
-                .filter(cartItem -> !cartItem.isCompleted())
                 .map(cartItemMapper::toDetailedDTO)
                 .toList();
     }

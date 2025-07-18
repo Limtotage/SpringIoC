@@ -39,14 +39,12 @@ public class CartController {
         return ResponseEntity.ok(cartService.getCart(cart));
     }
 
-
-
     @PostMapping("/add/{user_id}")
     @PreAuthorize("hasRole('ROLE_CUSTOMER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> addItem(@PathVariable Long user_id, @RequestBody CartItemDTO dto) {
         Cart cart = getCartByCustomer(user_id);
-        cartService.addItemToCart(cart, dto.getProductId(), dto.getQuantity());
-        return ResponseEntity.ok("Item added to cart successfully");
+        String msg = cartService.addItemToCart(cart, dto.getProductId(), dto.getQuantity());
+        return ResponseEntity.ok(msg);
     }
 
     // Sepeti boşalt
@@ -56,6 +54,7 @@ public class CartController {
         cartService.clearCart(cart);
         return ResponseEntity.ok("Cart cleared successfully");
     }
+
     @DeleteMapping("/confirm/{customerId}")
     public ResponseEntity<String> ConfirmCart(@PathVariable Long customerId) {
         Cart cart = getCartByCustomer(customerId);

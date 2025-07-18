@@ -35,7 +35,6 @@ public class Cart {
 
     public void calculateTotalPrice() {
         this.totalPrice = items.stream()
-                .filter(cartItem -> !cartItem.isCompleted())
                 .mapToDouble(CartItem::getSubtotal)
                 .sum();
     }

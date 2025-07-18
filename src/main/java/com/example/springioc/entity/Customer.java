@@ -1,6 +1,7 @@
 package com.example.springioc.entity;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -35,6 +36,9 @@ public class Customer {
     private Cart cart;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private Set<Order> orders = new HashSet<>();
+    private Set<Payment> payments = new HashSet<>();
+
+    @OneToMany(mappedBy = "customer")
+    private List<Order> orders;
 
 }

@@ -8,10 +8,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.springioc.dto.OrderDTO;
 import com.example.springioc.dto.PaymentDTO;
 import com.example.springioc.entity.Cart;
 import com.example.springioc.entity.Customer;
+import com.example.springioc.entity.Order;
 import com.example.springioc.repository.CustomerRepo;
+import com.example.springioc.repository.OrderRepo;
+import com.example.springioc.service.CartService;
 import com.example.springioc.service.OrderService;
 
 import jakarta.transaction.Transactional;
@@ -24,6 +28,10 @@ public class PaymentController {
     private OrderService orderService;
     @Autowired
     private CustomerRepo customerDB;
+    @Autowired
+    private OrderRepo orderDB;
+    @Autowired
+    private CartService cartService;
 
     @PostMapping("/{customerId}")
     @Transactional
@@ -35,8 +43,11 @@ public class PaymentController {
             dto.setMessage("Cart is empty");
             return ResponseEntity.badRequest().body(dto);
         }
-        orderService.saveOrder(cart, customer);
+        OrderDTO orderDTO = orderService.createOrderFromCart( customer);
+        Order order = orderService.convertToEntity(orderDTO);
+        orderDB.save(order);
         dto.setMessage("Ödeme başarıyla tamamlandı");
+        cartService.ConfirmCart(cart);
         return ResponseEntity.ok(dto);
     }
 }
