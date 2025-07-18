@@ -1,5 +1,6 @@
 package com.example.springioc.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,6 +21,11 @@ public class CartItem {
     private Long id;
 
     private int quantity;
+    @Column(name = "is_completed")
+    private boolean isCompleted = false;
+
+    @Column(name="total_item_price")
+    private Double itemTotal;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
@@ -28,8 +34,11 @@ public class CartItem {
     @ManyToOne
     @JoinColumn(name = "cart_id", nullable = false)
     private Cart cart;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
 
-    public double getSubtotal() {
+    public Double getSubtotal() {
         return product.getPrice() * quantity;
     }
 }

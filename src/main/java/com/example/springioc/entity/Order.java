@@ -2,7 +2,6 @@ package com.example.springioc.entity;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -10,7 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -20,7 +19,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "Payment")
-public class Payment {
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,13 +32,13 @@ public class Payment {
     private String cvc;
 
 
-    @ManyToMany(mappedBy = "payments")
-    private Set<Customer> customers = new HashSet<>();
-    
+    @ManyToOne
+    private Customer customer;
+
     private Double totalPaid;
-    private LocalDateTime paymentDate;
+    private LocalDateTime orderDate;
 
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Cart> purchasedItems;
+    @OneToMany(mappedBy="order",cascade = CascadeType.ALL)
+    private Set<CartItem> orderHistory = new HashSet<>();
 }
