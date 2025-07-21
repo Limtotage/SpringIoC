@@ -13,7 +13,6 @@ import com.example.springioc.entity.Stock;
 import com.example.springioc.mapper.CartItemMapper;
 import com.example.springioc.repository.CartItemRepo;
 import com.example.springioc.repository.CustomerRepo;
-import com.example.springioc.repository.ProductRepo;
 import com.example.springioc.repository.StockRepo;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -24,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 public class CartItemService {
     private final CartItemRepo cartItemDB;
     private final StockRepo stockDB;
-    private final ProductRepo productDB;
     private final CartItemMapper cartItemMapper;
     private final AuthComponents authComponents;
     private final CustomerRepo customerDB;
@@ -36,6 +34,14 @@ public class CartItemService {
     }
 
     public List<CartItemDetailedDTO> getAllCartItems(long user_id) {
+        boolean isAdmin = authComponents.isAdmin();
+        if (isAdmin) {
+            Cart cart = customerDB.findById(user_id)
+                    .orElseThrow(() -> new EntityNotFoundException("Customer Not Foun in Id: " + user_id)).getCart();
+            return cart.getItems().stream()
+                    .map(cartItemMapper::toDetailedDTO)
+                    .toList();
+        }
         Cart cart = getCartByCustomer(user_id);
         return cart.getItems().stream()
                 .map(cartItemMapper::toDetailedDTO)

@@ -32,6 +32,12 @@ public class CartController {
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_CUSTOMER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<CartDTO> getCart(@PathVariable Long id) {
+        boolean isAdmin = authComponents.isAdmin();
+        if (isAdmin) {
+            Cart cart = customerDB.findById(id)
+                    .orElseThrow(() -> new EntityNotFoundException("Customer Not Foun in Id: " + id)).getCart();
+            return ResponseEntity.ok(cartService.getCart(cart));
+        }
         Cart cart = getCartByCustomer(id);
         if (cart == null) {
             return ResponseEntity.notFound().build();
