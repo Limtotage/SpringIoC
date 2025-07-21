@@ -36,6 +36,9 @@ public class Product {
     @Column(name = "ProductPrice")
     private Double price;
 
+    @Column(name="SoldQuantity")
+    private int soldQuantity=0;
+
     public Product() {
     }
 

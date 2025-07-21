@@ -100,6 +100,11 @@ public class CartService {
     public void ConfirmCart(Cart cart) {
         if (cart.getItems().isEmpty())
             return;
+        for(CartItem item:cart.getItems()){
+            Product product = item.getProduct();
+            product.setSoldQuantity(product.getSoldQuantity()+item.getQuantity());
+            productDB.save(product);
+        }
         cart.getItems().clear();
         cart.setTotalPrice(0.0);
         cartDB.save(cart);
