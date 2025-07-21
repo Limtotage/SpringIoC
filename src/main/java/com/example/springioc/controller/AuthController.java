@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -38,31 +37,23 @@ import com.example.springioc.security.UserRepo;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
-    @Autowired
-    private AuthenticationManager authManager;
-    @Autowired
-    private JwtUtil jwtUtil;
-    @Autowired
-    private UserDetailsService userDetailsService;
-    @Autowired
-    private UserRepo userDB;
-    @Autowired
-    private RoleRepo roleDB;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private CustomerRepo customerDB;
-    @Autowired
-    private SellerRepo sellerDB;
-    @Autowired
-    private CartRepo cartDB;
-    @Autowired
-    private AuthComponents authComponents;
+    private final AuthenticationManager authManager;
+    private final JwtUtil jwtUtil;
+    private final UserDetailsService userDetailsService;
+    private final UserRepo userDB;
+    private final RoleRepo roleDB;
+    private final PasswordEncoder passwordEncoder;
+    private final CustomerRepo customerDB;
+    private final SellerRepo sellerDB;
+    private final CartRepo cartDB;
+    private final AuthComponents authComponents;
 
     @GetMapping
     public ResponseEntity<?> home() {

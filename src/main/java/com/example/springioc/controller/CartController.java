@@ -55,6 +55,7 @@ public class CartController {
 
     // Sepeti boşalt
     @DeleteMapping("/clear/{customerId}")
+    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER','ROLE_ADMIN')")
     public ResponseEntity<String> clearCart(@PathVariable Long customerId) {
         Cart cart = getCartByCustomer(customerId);
         cartService.clearCart(cart);
@@ -62,6 +63,7 @@ public class CartController {
     }
 
     @DeleteMapping("/confirm/{customerId}")
+    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER','ROLE_ADMIN')")
     public ResponseEntity<String> ConfirmCart(@PathVariable Long customerId) {
         Cart cart = getCartByCustomer(customerId);
         cartService.ConfirmCart(cart);

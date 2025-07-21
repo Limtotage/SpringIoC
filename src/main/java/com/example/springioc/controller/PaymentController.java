@@ -2,6 +2,7 @@ package com.example.springioc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,15 +36,18 @@ public class PaymentController {
 
     @PostMapping("/{customerId}")
     @Transactional
+    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER','ROLE_ADMIN')")
+
     public ResponseEntity<PaymentDTO> pay(@PathVariable Long customerId, @RequestBody PaymentDTO dto) {
-        Customer customer = customerDB.findByUser_Id(customerId).orElseThrow(() -> new RuntimeException("Customer not found"));
+        Customer customer = customerDB.findByUser_Id(customerId)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
         Cart cart = customer.getCart();
 
         if (cart == null || cart.getItems().isEmpty()) {
             dto.setMessage("Cart is empty");
             return ResponseEntity.badRequest().body(dto);
         }
-        OrderDTO orderDTO = orderService.createOrderFromCart( customer);
+        OrderDTO orderDTO = orderService.createOrderFromCart(customer);
         Order order = orderService.convertToEntity(orderDTO);
         orderDB.save(order);
         dto.setMessage("Ödeme başarıyla tamamlandı");
