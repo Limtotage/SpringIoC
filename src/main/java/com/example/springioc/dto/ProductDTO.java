@@ -10,7 +10,7 @@ public class ProductDTO {
     private String name;
     private Double price;
     private Integer productStock; 
-    private int SoldQuantity;
+    private int totalSales;
     private String categoryName;
     private StockStatus stockStatus;
 

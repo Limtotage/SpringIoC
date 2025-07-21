@@ -37,7 +37,7 @@ public class Product {
     private Double price;
 
     @Column(name="SoldQuantity")
-    private int soldQuantity=0;
+    private int totalSales=0;
 
     public Product() {
     }

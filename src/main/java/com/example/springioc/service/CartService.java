@@ -102,7 +102,7 @@ public class CartService {
             return;
         for(CartItem item:cart.getItems()){
             Product product = item.getProduct();
-            product.setSoldQuantity(product.getSoldQuantity()+item.getQuantity());
+            product.setTotalSales(product.getTotalSales()+item.getQuantity());
             productDB.save(product);
         }
         cart.getItems().clear();
