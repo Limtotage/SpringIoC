@@ -6,18 +6,22 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
+import com.example.springioc.dto.ProductDTO;
 import com.example.springioc.dto.SellerDTO;
 import com.example.springioc.entity.Product;
 import com.example.springioc.entity.Seller;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",uses={ProductMapper.class})
 public interface SellerMapper {
 
     @Mapping(source = "products", target = "productsIds",qualifiedByName="mapProductsToIds")
     SellerDTO toDTO(Seller seller);
+    
+
 
     @Mapping(source = "productsIds", target = "products",qualifiedByName="mapIdsToProducts")
     Seller toEntity(SellerDTO dto);
+
 
     @Named("mapProductsToIds")
     default List<Long> mapProductsToIds(List<Product> products) {

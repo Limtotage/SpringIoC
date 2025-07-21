@@ -2,16 +2,13 @@ package com.example.springioc.service;
 
 import org.springframework.stereotype.Service;
 
-import com.example.springioc.components.AuthComponents;
 import com.example.springioc.dto.CartDTO;
 import com.example.springioc.entity.Cart;
 import com.example.springioc.entity.CartItem;
 import com.example.springioc.entity.Product;
 import com.example.springioc.entity.Stock;
 import com.example.springioc.mapper.CartMapper;
-import com.example.springioc.repository.CartItemRepo;
 import com.example.springioc.repository.CartRepo;
-import com.example.springioc.repository.CustomerRepo;
 import com.example.springioc.repository.ProductRepo;
 import com.example.springioc.repository.StockRepo;
 
@@ -21,13 +18,10 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class CartService {
-    private final CartItemRepo cartItemDB;
     private final CartRepo cartDB;
     private final ProductRepo productDB;
-    private final CustomerRepo customerDB;
     private final StockRepo stockDB;
     private final CartMapper cartMapper;
-    private final AuthComponents authComponents;
 
     public CartDTO getCart(Cart cart) {
         cart.calculateTotalPrice();

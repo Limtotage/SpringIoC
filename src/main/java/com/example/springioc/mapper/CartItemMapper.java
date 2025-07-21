@@ -7,7 +7,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
-import org.mapstruct.ReportingPolicy;
 
 import com.example.springioc.dto.CartItemDTO;
 import com.example.springioc.dto.CartItemDetailedDTO;
@@ -15,7 +14,7 @@ import com.example.springioc.entity.CartItem;
 import com.example.springioc.entity.Product;
 import com.example.springioc.enums.StockStatus;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring") //,unmappedTargetPolicy = ReportingPolicy.IGNORE
 public interface CartItemMapper {
 
     @Mapping(target = "productId", source = "product.id")

@@ -16,7 +16,6 @@ import com.example.springioc.entity.Stock;
 import com.example.springioc.mapper.CustomerMapper;
 import com.example.springioc.repository.CustomerRepo;
 import com.example.springioc.repository.StockRepo;
-import com.example.springioc.security.UserRepo;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +24,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CustomerService {
     private final CustomerRepo customerDB;
-    private final UserRepo userDB;
     private final StockRepo stockDB;
     private final CustomerMapper mapper;
     private final AuthComponents authComponents;

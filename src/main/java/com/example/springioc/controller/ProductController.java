@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.springioc.dto.ProductDTO;
-import com.example.springioc.repository.SellerRepo;
 import com.example.springioc.service.ProductService;
 
 @RestController
@@ -23,8 +22,6 @@ import com.example.springioc.service.ProductService;
 public class ProductController {
     @Autowired
     private ProductService productService;
-    @Autowired
-    private SellerRepo sellerDB;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping

@@ -29,6 +29,11 @@ public class ProductService {
     private final SellerRepo sellerDB;
 
     public List<ProductDTO> getProductsBySeller(Long userId) {
+        boolean Admin = authComponents.isAdmin();
+        if(Admin){
+            Seller seller = sellerDB.findById(userId).orElseThrow(()->new EntityNotFoundException("Seller Not Found."));
+            return productDB.findBySeller(seller).stream().map(mapper::toDTO).toList();
+        }
         Seller seller = sellerDB.findByUser_Id(userId)
                 .orElseThrow(() -> new EntityNotFoundException("Seller not found for user ID: " + userId));
 

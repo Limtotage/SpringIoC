@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.springioc.components.AuthComponents;
 import com.example.springioc.dto.CartItemDetailedDTO;
 import com.example.springioc.service.CartItemService;
 
@@ -23,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CartItemController {
     private final CartItemService cartItemService;
-    private final AuthComponents authComponents;
 
     @GetMapping("/{user_id}")
     @PreAuthorize("hasRole('ROLE_CUSTOMER') or hasRole('ROLE_ADMIN')")
