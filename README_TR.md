@@ -255,6 +255,63 @@ npm start
 Frontend geliştirme sırasında Angular değişiklikleri otomatik olarak algılar ve uygulamayı yeniden derler.
 
 ---
+# 📸 Ekran Görüntüleri
+
+## 🔐 Kimlik Doğrulama
+
+### Giriş Sayfası
+
+![Giriş Sayfası](screenshots/login.png)
+
+### Kayıt Sayfası
+
+![Kayıt Sayfası](screenshots/register.png)
+
+---
+
+## 👨‍💼 Admin Paneli
+
+### Ürünler
+
+![Admin Ürünleri](screenshots/admin-products.png)
+
+### Satıcılar
+
+![Admin Satıcıları](screenshots/admin-sellers.png)
+
+### Müşteriler
+
+![Admin Müşterileri](screenshots/admin-customers.png)
+
+### Kategoriler
+
+![Admin Kategorileri](screenshots/admin-categories.png)
+
+---
+
+## 🏪 Satıcı Paneli
+
+### Satıcı Sayfası
+
+![Satıcı Sayfası](screenshots/seller-page.png)
+
+---
+
+## 🛍️ Müşteri
+
+### Müşteri Sayfası
+
+![Müşteri Sayfası](screenshots/customer-page.png)
+
+### Sepet
+
+![Müşteri Sepeti](screenshots/customer-cart.png)
+
+### Ödeme Sayfası
+
+![Müşteri Ödeme Sayfası](screenshots/customer-payment.png)
+
+---
 
 ## 📌 Not
 
