@@ -252,6 +252,53 @@ npm start
 Angular automatically detects frontend changes during development and recompiles the application.
 
 ---
+# 📸 Screenshots
+
+## 🔐 Authentication
+
+### Login Page
+![Login Page](screenshots/login.png)
+
+### Register Page
+![Register Page](screenshots/register.png)
+
+---
+
+## 👨‍💼 Admin Panel
+
+### Products
+![Admin Products](screenshots/admin-products.png)
+
+### Sellers
+![Admin Sellers](screenshots/admin-sellers.png)
+
+### Customers
+![Admin Customers](screenshots/admin-customers.png)
+
+### Categories
+![Admin Categories](screenshots/admin-categories.png)
+
+---
+
+## 🏪 Seller Panel
+
+### Seller Page
+![Seller Page](screenshots/seller-page.png)
+
+---
+
+## 🛍️ Customer
+
+### Customer Page
+![Customer Page](screenshots/customer-page.png)
+
+### Shopping Cart
+![Customer Cart](screenshots/customer-cart.png)
+
+### Payment Page
+![Customer Payment](screenshots/customer-payment.png)
+
+---
 
 ## 📌 Note
 
