@@ -1,0 +1,19 @@
+<div style="padding: 1rem" class="admin-wrapper">
+  <div style="display: flex; justify-content: space-between">
+    <button mat-raised-button color="primary" (click)="logout()">
+      Çıkış Yap
+    </button>
+    <button mat-raised-button style="color: red" (click)="deleteAccount()">
+      Hesabı Sil
+    </button>
+  </div>
+  <div style="padding: 1rem">
+    <div style="display: flex; justify-content: space-evenly">
+      <button mat-button routerLink="customers">Customers</button>
+      <button mat-button routerLink="products">Products</button>
+      <button mat-button routerLink="categories">Categories</button>
+      <button mat-button routerLink="sellers">Sellers</button>
+    </div>
+  </div>
+  <router-outlet></router-outlet>
+</div>
