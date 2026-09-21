@@ -1,3 +1,4 @@
+🇹🇷 Türkçe README
 # 🛒 E-Commerce Website
 
 A full-stack e-commerce application developed using **Spring Boot** and **Angular**. The project includes essential e-commerce features such as user management, product and category management, shopping cart operations, stock control, and role-based authorization.
