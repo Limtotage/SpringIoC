@@ -1,7 +1,6 @@
-
 services:
   postgres:
-    image: postgres:latest
+    image: postgres:17
     container_name: Store_Container
     environment:
       - POSTGRES_DB=StoreDB
@@ -19,4 +18,3 @@ volumes:
 
 networks:
   backend:
-
